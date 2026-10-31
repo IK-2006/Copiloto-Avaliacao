@@ -100,7 +100,12 @@ def conectar(caminho: str | Path | None = None) -> sqlite3.Connection:
     con = sqlite3.connect(caminho)
     con.row_factory = sqlite3.Row
     con.execute("PRAGMA foreign_keys = ON")
-    con.executescript(SCHEMA)
+    try:
+        con.executescript(SCHEMA)
+    except sqlite3.OperationalError as erro:
+        # Banco em volume somente leitura (ex.: o contêiner da API): se as tabelas já existem, basta ler.
+        if "readonly" not in str(erro).lower():
+            raise
     return con
 
 

@@ -8,16 +8,60 @@ de avaliações falsas.
 > de 19 itens, cerca de 3.000 pedidos (mai–out/2026) e 654 avaliações, geradas com padrões plantados
 > para a ferramenta descobrir.
 
-## Estado do projeto
+## O problema e a solução
 
-| Etapa | Conteúdo | Situação |
+Um restaurante de delivery recebe centenas de avaliações por mês. O dono não tem tempo de ler todas e, mesmo
+lendo, não consegue ligar as reclamações às causas reais (horário, tempo de entrega, prato específico) nem separar
+o que é falso do que é real.
+
+O Copiloto transforma avaliações em decisões priorizadas: classifica cada avaliação, cruza com os dados do
+pedido para achar **onde** os problemas se concentram, estima **quanto cada correção valeria na nota**, sinaliza
+**avaliações suspeitas**, sugere respostas (que o dono aprova) e responde perguntas em português. A regra que
+guia tudo: **todo número é calculado em código** (a IA classifica e escreve, mas nunca calcula), sempre com a
+base (`58% de 102 avaliações`) e com aviso de baixa confiança quando a amostra é pequena.
+
+## O que o projeto faz
+
+| Funcionalidade | Onde | Em uma frase |
 |---|---|---|
-| 1 | Dados fictícios, classificação, análise por prato, dashboard básico | **pronta** |
-| 2 | Causa raiz cruzando avaliações e dados dos pedidos; alertas de tendência | **pronta** |
-| 3 | Plano de ação priorizado pelo impacto na nota e sugestões de melhoria dos pratos | **pronta** |
-| 4 | Detecção de avaliações suspeitas (métricas com e sem elas) | **pronta** |
-| 5 | Respostas sugeridas com aprovação e perguntas em linguagem natural | **pronta** |
-| 6 | Resumo semanal no n8n e deploy online | a fazer |
+| Classificação | `copiloto/classify.py` | sentimento, temas e pratos de cada avaliação, com cache |
+| Análise por prato | aba Análise por prato | quais problemas cada item do cardápio mais gera |
+| Causa raiz | aba Causa raiz | em que dia, horário, tempo e distância cada problema se concentra |
+| Plano de ação | aba Plano de ação | o que resolver primeiro, pelo efeito estimado na nota, com sugestões a avaliar |
+| Avaliações suspeitas | aba Suspeitas | sinais, nível e motivo de cada alerta; métricas com e sem as suspeitas |
+| Respostas sugeridas | aba Respostas | rascunhos que o dono edita e aprova; nada é publicado |
+| Perguntas em português | aba Pergunte aos dados | respostas só com consultas em código, com os números usados e gráfico |
+| Resumo semanal | `n8n/`, `api/` | toda segunda, por e-mail, os três pontos que mais precisam de atenção |
+
+Há um roteiro para gravar uma demonstração de 2 minutos em [`docs/roteiro-video.md`](docs/roteiro-video.md).
+
+## Arquitetura
+
+```
+gerador de dados (seed fixa) ─► SQLite (pedidos, avaliações, clientes, cardápio, rascunhos)
+                                     │
+        ┌────────────────────────────┴──────────────────────────┐
+        ▼                                                       ▼
+ camada de IA (Claude | Regras)                      análises em pandas
+ anonimiza → classifica → cache                      todo número sai daqui, com a base n
+ rascunhos de resposta, perguntas                    causa raiz, plano, suspeitas, resumo
+        └────────────────────────┬──────────────────────────────┘
+                 ┌───────────────┴───────────────┐
+                 ▼                               ▼
+       dashboard Streamlit            API FastAPI /weekly-summary ◄─ n8n (segunda, 8h) ─► e-mail
+```
+
+- **Funciona sem chave.** O provedor **Regras** (léxico, modelos de frase, roteador de perguntas) roda offline e
+  é o padrão. Com `ANTHROPIC_API_KEY`, o **Claude** assume classificação, rascunhos e perguntas livres, e
+  qualquer falha ou o limite diário devolvem o app ao modo offline.
+- **Números só do código.** `copiloto/stats.py` devolve cada percentual com sua base e marca **baixa confiança**
+  abaixo de 20 avaliações. A IA nunca calcula percentuais, e as respostas do modo Claude têm os números
+  conferidos contra as consultas.
+- **Análise por prato.** A base de cada prato é o conjunto de avaliações que o citam. Isso mede o que se
+  diz do prato quando ele é lembrado, não a taxa de falha em todos os pedidos; por isso a tabela traz
+  também quantos pedidos incluíram o prato. Citações a pratos fora do pedido são descartadas.
+- **Cache.** Cada classificação é guardada com uma impressão digital do que foi enviado, do provedor e
+  da versão. Visitar o dashboard nunca gera chamadas à IA.
 
 ## Como rodar
 
@@ -34,40 +78,19 @@ python -m venv .venv
 ```
 
 O repositório já inclui `data/restaurante.db` classificado, então basta abrir o dashboard.
+`requirements-lock.txt` traz as versões exatas com que os testes passaram.
 
 ### Com ou sem chave da Anthropic
 
-O app tem dois provedores de IA intercambiáveis:
-
-- **Regras** (padrão, offline): léxico de palavras para sentimento, temas e pratos. Não precisa de chave.
-- **Claude**: ativado automaticamente quando `ANTHROPIC_API_KEY` está definida (copie `.env.example`
-  para `.env`). Usa Haiku 5.5 para classificar. Para reclassificar tudo com o Claude:
-  `python -m copiloto.classify --provedor claude --forcar`.
+- **Sem chave** (padrão): tudo funciona no modo offline.
+- **Com chave:** copie `.env.example` para `.env` e preencha `ANTHROPIC_API_KEY`. Classificação com Haiku 5.5; rascunhos
+  e perguntas com Sonnet 5.5, com limite diário (`COPILOTO_LIMITE_DIARIO_LLM`). Para reclassificar tudo com o
+  Claude: `python -m copiloto.classify --provedor claude --forcar`. Para conferir a chave e os três usos do Claude
+  (classificação, rascunho de resposta e perguntas) antes de usar o app: `python scripts/check_claude.py`
+  (cerca de 10 chamadas pequenas, sem gravar nada no banco).
 
 > O caminho do Claude está implementado e coberto por testes com um cliente simulado, mas ainda
 > **não foi executado contra a API real**, por falta de chave durante o desenvolvimento.
-
-## Como funciona
-
-```
-gerador de dados (seed fixa) ─► SQLite (pedidos, avaliações, clientes, cardápio)
-                                     │
-        ┌────────────────────────────┴──────────────────────────┐
-        ▼                                                       ▼
- camada de IA (Claude | Regras)                      análises em pandas
- anonimiza → classifica → cache                      todo percentual sai daqui, com n
-        └────────────────────────┬──────────────────────────────┘
-                                 ▼
-                       dashboard Streamlit
-```
-
-- **Números só do código.** `copiloto/stats.py` devolve cada percentual com sua base (`65% de 120
-  avaliações`) e marca **baixa confiança** abaixo de 20 avaliações. A IA nunca calcula percentuais.
-- **Análise por prato.** A base de cada prato é o conjunto de avaliações que o citam. Isso mede o que se
-  diz do prato quando ele é lembrado, não a taxa de falha em todos os pedidos; por isso a tabela traz
-  também quantos pedidos incluíram o prato. Citações a pratos fora do pedido são descartadas.
-- **Cache.** Cada classificação é guardada com uma impressão digital do que foi enviado, do provedor e
-  da versão. Visitar o dashboard nunca gera chamadas à IA.
 
 ## Padrões plantados nos dados
 
@@ -279,6 +302,31 @@ teste, então não é afirmado). O tempo de entrega nos pedidos de sexta à noit
 (+16 min, 84 pedidos), e a resposta fecha dizendo que isso coincide com os 0,19 restantes, "o que não prova que
 ela seja a causa".
 
+## Resumo semanal por e-mail (n8n)
+
+Toda **segunda-feira às 8h** um fluxo do n8n busca o resumo na API do projeto e o envia por e-mail. O texto traz
+a semana (avaliações, nota média, negativas) e os **três pontos que mais precisam de atenção**, cada um com os
+números, uma sugestão a avaliar e o aviso de que sugestões não são garantia (`copiloto/resumo_semanal.py`). Nos
+dados fictícios, a primeira semana (25/10 a 31/10) traz:
+
+1. **Possível ataque de avaliações falsas:** 44 avaliações suspeitas de 14/10 a 16/10, com nota média 1,0.
+2. **Entregas mais lentas em pedidos de sexta-feira, à noite:** 64 min nas últimas 4 semanas, contra 49 min
+   antes (+15 min); resolver isso leva a nota de 3,88 para 4,11 (conservador: +0,11).
+3. **Melhorar Batata Frita:** nota de 4,19 para 4,26 se resolvido (conservador: +0,04).
+
+Os pontos seguem uma ordem fixa (ataque recente, queda da nota, temas em alta, piora de entrega e ações do plano);
+quando a ação do plano trata do mesmo segmento de um ponto de entrega, os dois viram um só.
+
+- **Sem IA e sem dados pessoais:** o resumo é calculado em código e funciona offline; a API devolve só números
+  agregados (testado: nenhum nome, telefone ou endereço de cliente).
+- **API** (`api/main.py`): `GET /weekly-summary` devolve `assunto`, `texto`, `html`, métricas e pontos;
+  `GET /health` para verificação. Com `COPILOTO_API_TOKEN` definido, exige o cabeçalho `X-API-Token`
+  (comparação em tempo constante). Parâmetros: `ate` (último dia da semana) e `modo` (filtro de suspeitas).
+- **Workflow** (`n8n/workflow.json`): Schedule Trigger (segunda, 8h, horário de Brasília) → HTTP Request (com
+  nova tentativa) → Send Email. Não contém segredos: o token da API e o SMTP são credenciais do n8n.
+- **Como subir:** `docker compose up -d` (API e n8n) ou `npx n8n` e `uvicorn` sem Docker. Passo a passo,
+  credenciais e um SMTP de teste local em [`n8n/README.md`](n8n/README.md).
+
 ## Qualidade do classificador
 
 Medida contra o gabarito (`python -m copiloto.validacao`), provedor **Regras**:
@@ -311,20 +359,58 @@ de 10% dos temas passam despercebidos. Em avaliações reais os números seriam 
   seções acima).
 - **Segredos só em variáveis de ambiente.** `.env` está no `.gitignore`; `.env.example` mostra as chaves.
 
+## Publicar online
+
+O dashboard vai ao **Streamlit Community Cloud** (gratuito) a partir do GitHub, com o banco fictício versionado.
+O passo a passo, os *secrets* opcionais (chave do Claude e limite diário) e as limitações do demo público estão em
+[`docs/deploy.md`](docs/deploy.md). O último clique exige o login na conta do GitHub.
+
+## Limites e o que não foi verificado
+
+- **Claude real:** o caminho do Claude (classificação, rascunhos e perguntas) está coberto por testes com um
+  cliente simulado, mas **nunca rodou contra a API**. `python scripts/check_claude.py` confere os três usos com a
+  sua chave.
+- **n8n:** o fluxo foi verificado de ponta a ponta com o **n8n 2.45.7**, instalado com `npx` e executado pelo binário do pacote (sem Docker): o workflow
+  foi importado com as credenciais de token e de SMTP; uma execução manual passou pelos nós de HTTP e de e-mail;
+  e, com o gatilho trocado para "a cada minuto", o agendador do n8n disparou sozinho e o e-mail chegou a um SMTP
+  local de teste, com assunto, texto e HTML corretos. **Não esperei uma segunda-feira** para ver o gatilho real
+  das 8h (a regra é a do próprio nó: semanal, segunda, 8h, horário de Brasília) e **não testei com um provedor
+  SMTP real**. O n8n avisa que rodar fora de contêiner está obsoleto; para uso contínuo, prefira o Docker.
+- **Docker:** o `docker-compose.yml` e o `Dockerfile` da API **não foram executados**, porque o Docker não estava
+  instalado na máquina de desenvolvimento; os testes só conferem os arquivos (imagem fixa, portas locais,
+  variáveis obrigatórias, nenhum segredo).
+- **Deploy:** a publicação no Streamlit Community Cloud não foi feita (exige o login no GitHub). O app foi testado
+  em Python 3.14; o Cloud usará a versão escolhida nas configurações (recomendada: 3.12).
+- **Dados sintéticos:** os padrões foram plantados pelo mesmo autor das ferramentas. A acurácia do classificador de
+  regras e a detecção de suspeitas ficam otimistas nesses dados; em avaliações reais os números seriam menores.
+  Pendências típicas do mundo real (textos longos, ironia, avaliações reescritas por IA) não estão representadas.
+- **Modo offline:** o roteador de perguntas só reconhece alguns tipos de pergunta; perguntas livres exigem o Claude.
+- **Estimativas de impacto:** o ganho na nota é um contrafactual simples, não uma previsão nem o efeito de uma
+  medida específica. Padrões da causa raiz apontam onde procurar, não provam a causa.
+- **Demo público:** não tem login, todos os visitantes veem o mesmo estado, e os rascunhos e o contador de uso
+  gravados no banco não persistem entre reinícios do Streamlit Cloud.
+- **Escala:** a comparação de textos das suspeitas é O(n²), adequada para alguns milhares de avaliações.
+
 ## Estrutura
 
 ```
 copiloto/
-  datagen/      gerador de dados fictícios e padrões plantados
-  llm/          contrato, provedores (Regras, Claude), anonimização e detecção de injeção
-  analytics/    base analítica, análise por prato, séries temporais, causa raiz, plano de ação,
-                suspeitas, alertas de tendência, variação da nota
-  qa/           ferramentas de consulta, agente offline (regras) e agente Claude, checagem de números
-  respostas.py  rascunhos de resposta, edição e aprovação
-  classify.py   pipeline de classificação com cache
-  validacao.py  compara a classificação e a detecção de suspeitas com o gabarito
-  stats.py      percentuais com base e aviso de baixa confiança
-app/            dashboard Streamlit (um módulo por aba maior)
-tests/          testes automatizados
-data/           banco SQLite e gabarito (fictícios)
+  datagen/        gerador de dados fictícios e padrões plantados
+  llm/            contrato, provedores (Regras, Claude), anonimização, detecção de injeção, limite diário
+  analytics/      base analítica, análise por prato, séries, causa raiz, plano de ação, suspeitas,
+                  alertas de tendência, variação da nota
+  qa/             ferramentas de consulta, agente offline (regras) e agente Claude, checagem de números
+  respostas.py    rascunhos de resposta, edição e aprovação
+  resumo_semanal.py  os três pontos da semana, em texto e HTML
+  classify.py     pipeline de classificação com cache
+  validacao.py    compara classificação e suspeitas com o gabarito
+  stats.py        percentuais com base e aviso de baixa confiança
+app/              dashboard Streamlit (um módulo por aba maior)
+api/              API FastAPI do resumo semanal (e Dockerfile)
+n8n/              workflow do resumo semanal e guia de configuração
+docs/             roteiro do vídeo e guia de deploy
+scripts/          check_claude.py (confere sua chave) e smtp_de_teste.py (SMTP local de teste)
+tests/            testes automatizados
+data/             banco SQLite e gabarito (fictícios)
+docker-compose.yml  API + n8n
 ```

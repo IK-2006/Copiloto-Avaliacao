@@ -1,0 +1,41 @@
+# API do resumo semanal + n8n local. Uso:
+#   1. copie .env.example para .env e preencha COPILOTO_API_TOKEN, N8N_ENCRYPTION_KEY e RESUMO_EMAIL_PARA
+#   2. docker compose up -d
+#   3. abra http://localhost:5678, importe n8n/workflow.json e crie as duas credenciais (ver n8n/README.md)
+# O dashboard (Streamlit) não faz parte deste compose: roda local ou no Streamlit Community Cloud.
+services:
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    environment:
+      COPILOTO_API_TOKEN: ${COPILOTO_API_TOKEN:?defina COPILOTO_API_TOKEN no .env}
+      COPILOTO_DASHBOARD_URL: ${COPILOTO_DASHBOARD_URL:-}
+    volumes:
+      - ./data:/app/data:ro
+    ports:
+      - "127.0.0.1:8000:8000"
+    restart: unless-stopped
+
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:2.45.7
+    depends_on:
+      - api
+    ports:
+      - "127.0.0.1:5678:5678"
+    environment:
+      GENERIC_TIMEZONE: America/Sao_Paulo
+      TZ: America/Sao_Paulo
+      N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY:?defina N8N_ENCRYPTION_KEY no .env}
+      # Valores não secretos usados no workflow; o token e o SMTP ficam em credenciais do n8n.
+      N8N_BLOCK_ENV_ACCESS_IN_NODE: "false"
+      COPILOTO_API_URL: http://api:8000
+      RESUMO_EMAIL_PARA: ${RESUMO_EMAIL_PARA:?defina RESUMO_EMAIL_PARA no .env}
+      RESUMO_EMAIL_DE: ${RESUMO_EMAIL_DE:-copiloto@localhost}
+    volumes:
+      - n8n_dados:/home/node/.n8n
+      - ./n8n/workflow.json:/workflows/workflow.json:ro
+    restart: unless-stopped
+
+volumes:
+  n8n_dados:

@@ -1,0 +1,11 @@
+.git
+.venv
+.env
+.claude
+__pycache__
+*.pyc
+.pytest_cache
+tests
+app
+n8n/.n8n
+docs

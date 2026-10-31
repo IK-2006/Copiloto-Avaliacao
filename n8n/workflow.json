@@ -1,0 +1,84 @@
+{
+  "name": "Copiloto de Avaliações - Resumo semanal",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtDay": [1],
+              "triggerAtHour": 8,
+              "triggerAtMinute": 0
+            }
+          ]
+        }
+      },
+      "id": "6f1d0c9e-3a52-4d6b-9a3c-0b7d7a1c0001",
+      "name": "Toda segunda às 8h",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "url": "={{ ($env.COPILOTO_API_URL || 'http://api:8000') + '/weekly-summary' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "id": "6f1d0c9e-3a52-4d6b-9a3c-0b7d7a1c0002",
+      "name": "Buscar o resumo na API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [260, 0],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "copiloto-api-token",
+          "name": "Token da API do Copiloto"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ $env.RESUMO_EMAIL_DE || 'copiloto@localhost' }}",
+        "toEmail": "={{ $env.RESUMO_EMAIL_PARA }}",
+        "subject": "={{ $json.assunto }}",
+        "emailFormat": "both",
+        "text": "={{ $json.texto }}",
+        "html": "={{ $json.html }}",
+        "options": {}
+      },
+      "id": "6f1d0c9e-3a52-4d6b-9a3c-0b7d7a1c0003",
+      "name": "Enviar o e-mail",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [520, 0],
+      "credentials": {
+        "smtp": {
+          "id": "copiloto-smtp",
+          "name": "SMTP do resumo semanal"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Toda segunda às 8h": {
+      "main": [[{ "node": "Buscar o resumo na API", "type": "main", "index": 0 }]]
+    },
+    "Buscar o resumo na API": {
+      "main": [[{ "node": "Enviar o e-mail", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Sao_Paulo"
+  },
+  "pinData": {}
+}

@@ -15,7 +15,7 @@ de avaliações falsas.
 | 1 | Dados fictícios, classificação, análise por prato, dashboard básico | **pronta** |
 | 2 | Causa raiz cruzando avaliações e dados dos pedidos; alertas de tendência | **pronta** |
 | 3 | Plano de ação priorizado pelo impacto na nota e sugestões de melhoria dos pratos | **pronta** |
-| 4 | Detecção de avaliações suspeitas (métricas com e sem elas) | a fazer |
+| 4 | Detecção de avaliações suspeitas (métricas com e sem elas) | **pronta** |
 | 5 | Respostas sugeridas com aprovação e perguntas em linguagem natural | a fazer |
 | 6 | Resumo semanal no n8n e deploy online | a fazer |
 
@@ -77,7 +77,7 @@ Descritos também em `data/plantados.json`, que traz o gabarito de cada avaliaç
 |---|---|---|
 | P1 | Batata frita murcha ou fria em entregas acima de 40 min (80% dos pedidos, contra 10% nos demais) | Análise por prato |
 | P2 | Sextas à noite com +16 min de preparo e trânsito, e outros +16 min a partir de 01/10 | Aba Causa raiz |
-| P3 | Ataque de 46 avaliações falsas de 14 a 16/10: nota 1–2, textos quase idênticos, contas novas | Queda da nota na semana de 12/10; alerta de tendência; Etapa 4 |
+| P3 | Ataque de 46 avaliações falsas de 14 a 16/10: nota 1–2, textos quase idênticos, contas novas | Aba Suspeitas; queda da nota na semana de 12/10; alerta de tendência |
 | P4 | Açaí derretido em entregas acima de 5 km | Análise por prato; Causa raiz por prato |
 | P5 | Pudim e Salada Caesar quase não aparecem nas avaliações | Aviso de baixa confiança |
 | P6 | Duas avaliações reais com "ignore as instruções anteriores…" | Aba Segurança |
@@ -155,9 +155,11 @@ problemas citados e do que sobra de cada tema. Uma ação só entra se resolver 
 e elevar a nota em pelo menos 0,005; as de menos de 20 avaliações aparecem com aviso de baixa confiança.
 
 **É uma estimativa, não uma previsão.** Supõe que quem reclamou de X avaliaria como quem não reclama de nada
-se X sumisse e que o resto fica igual. Não mede o efeito de nenhuma medida específica. Hoje o cálculo inclui
-as avaliações do ataque (P3) que têm pedido; sem as falsas, a nota de hoje e a referência são mais altas, e a
-Etapa 4 permitirá tirar as suspeitas do cálculo.
+se X sumisse e que o resto fica igual. Não mede o efeito de nenhuma medida específica. A tabela acima inclui
+as avaliações do ataque (P3) que têm pedido. Com o filtro **"Excluir suspeitas médias e altas"** da barra
+lateral, o plano é recalculado: a nota de hoje sobe de 3,79 para **3,88**, a referência de 4,28 para 4,41 e o
+cenário completo chega a 4,41 (conservador: 4,14). A ordem das três primeiras ações não muda (a primeira vai
+de 3,88 para 4,11).
 
 ### Sugestões de melhoria
 
@@ -165,6 +167,50 @@ Cada ação traz sugestões **a avaliar**, com o motivo e o indicador para saber
 murcha, por exemplo: embalagem com furos de ventilação, molho e sal à parte, ajuste do tempo de fritura. Elas
 vêm de um **catálogo escrito à mão** (`copiloto/sugestoes.py`), escolhido por regra conforme o tema, o prato e
 as condições do segmento (pico, distância). Não há IA nesse passo e nada disso é garantia de resultado.
+
+## Avaliações suspeitas
+
+A aba **Suspeitas** (`copiloto/analytics/suspeitas.py`) **só sinaliza**: nada é apagado, ocultado nem
+contestado, e a decisão de contestar na plataforma é do dono. Cada avaliação soma pontos por sinal e recebe
+um nível e os motivos em linguagem simples.
+
+| Sinal | Pontos | Como é medido |
+|---|---|---|
+| Sem pedido correspondente | 2 | a avaliação não aponta para nenhum pedido |
+| Conta nova | 1 | conta criada há menos de 7 dias e com no máximo 1 pedido (cliente novo avaliando o primeiro pedido é normal, por isso pesa pouco) |
+| Rajada de notas baixas | 1 | o dia tem muito mais avaliações de nota 1–2 do que o normal (Poisson, p < 0,001, mínimo de 5) |
+| Texto muito parecido | 3 | cosseno >= 0,8 sobre trechos de 3 a 5 letras com pelo menos 2 outras avaliações, de 3 contas diferentes, em até 7 dias |
+
+Níveis: 1–2 baixo, 3–4 médio, 5 ou mais alto. Nenhum sinal sozinho passa de "médio": **"alto" exige
+combinação**. A aba mostra o episódio detectado, a nota e as avaliações negativas com e sem as suspeitas, um
+gráfico das notas 1–2 por dia, a lista com os motivos e um CSV para anexar a uma contestação. A barra
+lateral tem o filtro global (incluir todas, excluir médias e altas, excluir só as altas) e o gráfico semanal
+da visão geral mostra sempre as duas linhas.
+
+**Resultado nos dados fictícios** (`python -m copiloto.validacao`, contra o gabarito do gerador):
+
+| Nível | Falsas detectadas | Genuínas acusadas | Precisão | Revocação |
+|---|---|---|---|---|
+| Médio ou alto | 44 de 46 | 1 de 608 | 0,98 | 0,96 |
+| Só alto | 40 de 46 | 0 de 608 | 1,00 | 0,87 |
+
+O episódio aparece como "44 avaliações suspeitas de 14/10 a 16/10, com nota média 1,0. Dessas, 24 (55%) não
+têm pedido, 40 (91%) vêm de contas novas e 44 (100%) têm texto parecido com o de outras". Sem as suspeitas, a
+nota média vai de 3,69 para **3,88** e as avaliações negativas de 28% para 23%; o alerta de tendência de
+atendimento (ver acima) some. As duas avaliações com injeção de prompt não são confundidas com ataque.
+
+**Os erros e os limites:**
+
+- O falso alarme é um elogio genérico ("Nota 10. Comida deliciosa, chegou antes do prazo.") que três contas
+  escreveram igual em poucos dias: parece cópia e pode ser coincidência. Por isso cada alerta traz o motivo.
+- As 2 falsas perdidas são cópias curtas ("Comida com cabelo e muito suja…") com uma palavra trocada que
+  só aparece nas duas ("humilhação"): cada uma tem apenas 1 texto parecido, e o sinal exige pelo menos 2.
+  Ainda assim recebem 2 pontos (conta nova e rajada).
+- Uma rajada isolada de 5 notas baixas em 28/08 também é marcada (1 ponto, nível baixo).
+- Os dados falsos foram escritos a partir de 4 modelos de texto, o que facilita o sinal de similaridade.
+  Textos reescritos por um modelo de linguagem escapariam dele, e um ataque lento e espalhado escaparia da
+  rajada; nesses casos sobram os sinais de conta e de pedido.
+- A comparação de textos é O(n²), adequada para alguns milhares de avaliações.
 
 ## Qualidade do classificador
 
@@ -203,7 +249,7 @@ copiloto/
   llm/          contrato, provedores (Regras, Claude), anonimização e detecção de injeção
   analytics/    base analítica, análise por prato, séries temporais, causa raiz, alertas de tendência
   classify.py   pipeline de classificação com cache
-  validacao.py  compara a classificação com o gabarito
+  validacao.py  compara a classificação e a detecção de suspeitas com o gabarito
   stats.py      percentuais com base e aviso de baixa confiança
 app/            dashboard Streamlit
 tests/          testes automatizados

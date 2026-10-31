@@ -29,20 +29,26 @@ def carregar_pedidos(con: sqlite3.Connection) -> pd.DataFrame:
 def carregar_avaliacoes(con: sqlite3.Connection) -> pd.DataFrame:
     """Avaliações classificadas, com os atributos do pedido quando existir.
 
-    Colunas extras: `temas` (lista), `pratos` (lista de {prato, problemas}), `tem_pedido`
-    e `itens` (itens do pedido; tupla vazia quando a avaliação não tem pedido).
+    Colunas extras: `temas` (lista), `pratos` (lista de {prato, problemas}), `tem_pedido`,
+    `itens` (itens do pedido; tupla vazia quando a avaliação não tem pedido), `conta_criada_em`
+    e `pedidos_da_conta` (pedidos da conta até o momento da avaliação, inclusive).
     """
     df = db.consultar(
         con,
         """SELECT a.avaliacao_id, a.pedido_id, a.cliente_id, a.criado_em, a.nota, a.texto,
                   k.sentimento, k.temas, k.pratos, k.injecao, k.provedor,
-                  p.dia_semana, p.hora, p.turno, p.tempo_preparo_min, p.tempo_entrega_min, p.distancia_km
+                  p.dia_semana, p.hora, p.turno, p.tempo_preparo_min, p.tempo_entrega_min, p.distancia_km,
+                  c.criado_em AS conta_criada_em,
+                  (SELECT COUNT(*) FROM pedidos p2
+                    WHERE p2.cliente_id = a.cliente_id AND p2.criado_em <= a.criado_em) AS pedidos_da_conta
            FROM avaliacoes a
            JOIN classificacoes k ON k.avaliacao_id = a.avaliacao_id
+           JOIN clientes c ON c.cliente_id = a.cliente_id
            LEFT JOIN pedidos p ON p.pedido_id = a.pedido_id
            ORDER BY a.criado_em""",
     )
     df["criado_em"] = pd.to_datetime(df["criado_em"])
+    df["conta_criada_em"] = pd.to_datetime(df["conta_criada_em"])
     df["temas"] = df["temas"].map(json.loads)
     df["pratos"] = df["pratos"].map(json.loads)
     df["tem_pedido"] = df["pedido_id"].notna()

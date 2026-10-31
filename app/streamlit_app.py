@@ -27,6 +27,16 @@ from copiloto.analytics.causa_raiz import (
 from copiloto.analytics.impacto import Acao, Plano, montar_plano
 from copiloto.analytics.pratos import AnalisePrato, analise_por_prato, ranking_pratos
 from copiloto.analytics.series import nota_por_semana, ranking_temas, resumo_geral, temas_por_semana
+from copiloto.analytics.suspeitas import (
+    LIMITE_ALTO,
+    LIMITE_MEDIO,
+    MODOS,
+    PONTOS,
+    com_suspeitas,
+    comparar_metricas,
+    episodios_suspeitos,
+    filtrar_suspeitas,
+)
 from copiloto.analytics.tendencias import alertas_tendencia
 from copiloto.dominio import ROTULO_TEMA
 from copiloto.stats import formatar_nota, formatar_pct
@@ -41,21 +51,31 @@ COR_NEUTRA = "#a8a29e"
 
 @st.cache_data(show_spinner=False)
 def carregar(db_path: str, versao_arquivo: float) -> pd.DataFrame:
+    """Todas as avaliações classificadas, já com os sinais de suspeita."""
     con = db.conectar(db_path)
     try:
-        return carregar_avaliacoes(con)
+        return com_suspeitas(carregar_avaliacoes(con))
     finally:
         con.close()
+
+
+def base_filtrada(db_path: str, versao_arquivo: float, modo: str) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Avaliações e pedidos sem o que o filtro de suspeitas tira da análise."""
+    todas = carregar(db_path, versao_arquivo)
+    avaliacoes = filtrar_suspeitas(todas, modo)
+    con = db.conectar(db_path)
+    try:
+        pedidos = carregar_pedidos(con)
+    finally:
+        con.close()
+    tirados = set(todas["pedido_id"].dropna().astype(int)) - set(avaliacoes["pedido_id"].dropna().astype(int))
+    return avaliacoes, pedidos[~pedidos["pedido_id"].isin(tirados)]
 
 
 @st.cache_data(show_spinner="Procurando padrões nos pedidos…")
-def calcular_causas(db_path: str, versao_arquivo: float):
+def calcular_causas(db_path: str, versao_arquivo: float, modo: str):
     """Causa raiz por tema (mecanismo e quando/onde), por prato e das entregas lentas."""
-    con = db.conectar(db_path)
-    try:
-        avaliacoes, pedidos = carregar_avaliacoes(con), carregar_pedidos(con)
-    finally:
-        con.close()
+    avaliacoes, pedidos = base_filtrada(db_path, versao_arquivo, modo)
     pratos = sorted({i for itens in pedidos["itens"] for i in itens})
     return {
         "pedidos": pedidos,
@@ -67,10 +87,10 @@ def calcular_causas(db_path: str, versao_arquivo: float):
 
 
 @st.cache_data(show_spinner="Calculando o plano de ação…")
-def calcular_plano(db_path: str, versao_arquivo: float) -> tuple[Plano, dict[str, str]]:
+def calcular_plano(db_path: str, versao_arquivo: float, modo: str) -> tuple[Plano, dict[str, str]]:
+    avaliacoes, pedidos = base_filtrada(db_path, versao_arquivo, modo)
     con = db.conectar(db_path)
     try:
-        avaliacoes, pedidos = carregar_avaliacoes(con), carregar_pedidos(con)
         categorias = {r["nome"]: r["categoria"] for r in con.execute("SELECT nome, categoria FROM cardapio")}
     finally:
         con.close()
@@ -105,7 +125,7 @@ def cartao_acao(acao: Acao, categorias: dict[str, str]) -> None:
 
 
 def desenhar_plano_de_acao() -> None:
-    plano, categorias = calcular_plano(str(cfg.db_path), cfg.db_path.stat().st_mtime)
+    plano, categorias = calcular_plano(str(cfg.db_path), cfg.db_path.stat().st_mtime, modo)
     st.subheader("O que resolver primeiro")
     if not plano.acoes:
         st.info("Não há reclamações suficientes para montar um plano.")
@@ -115,8 +135,8 @@ def desenhar_plano_de_acao() -> None:
     c2.metric("Com o plano, cenário conservador", formatar_nota(plano.nota_final_conservadora, 2))
     c3.metric("Com o plano, cenário completo", formatar_nota(plano.nota_final, 2))
     st.caption(
-        "Estimativa, não previsão. Considera só avaliações de pedidos (sem pedido não dá para localizar a causa); "
-        "a Etapa 4 permitirá tirar as suspeitas."
+        "Estimativa, não previsão. Considera só avaliações de pedidos (sem pedido não dá para localizar a causa). "
+        f"Filtro de suspeitas: {MODOS[modo].lower()}."
     )
     with st.expander("Como a estimativa foi calculada"):
         st.markdown(
@@ -170,10 +190,22 @@ if not cfg.db_path.exists():
     st.error("Banco de dados não encontrado. Rode `python -m copiloto.datagen` e `python -m copiloto.classify`.")
     st.stop()
 
-df = carregar(str(cfg.db_path), cfg.db_path.stat().st_mtime)
-if df.empty:
+df_todas = carregar(str(cfg.db_path), cfg.db_path.stat().st_mtime)
+if df_todas.empty:
     st.error("Nenhuma avaliação classificada. Rode `python -m copiloto.classify`.")
     st.stop()
+
+with st.sidebar:
+    st.header("Avaliações suspeitas")
+    modo = st.radio("Nas métricas e análises", list(MODOS), format_func=MODOS.get, index=0,
+                    help="Só tira as avaliações da conta. Nada é apagado nem contestado: essa decisão é do dono.")
+    niveis = df_todas["suspeita_nivel"].value_counts()
+    st.caption(
+        f"Detectadas: **{int(niveis.get('alto', 0))} altas**, {int(niveis.get('médio', 0))} médias e "
+        f"{int(niveis.get('baixo', 0))} baixas, em {len(df_todas)} avaliações."
+    )
+
+df = filtrar_suspeitas(df_todas, modo)
 
 st.title("🍽️ Copiloto de Avaliações")
 st.caption(
@@ -188,23 +220,27 @@ c2.metric("Nota média", formatar_nota(geral["nota_media"]))
 c3.metric("Avaliações negativas", formatar_pct(geral["negativas"].pct), help=geral["negativas"].texto())
 c4.metric("Com pedido associado", formatar_pct(geral["com_pedido"].pct), help=geral["com_pedido"].texto())
 
-aba_geral, aba_pratos, aba_causa, aba_plano, aba_seguranca, aba_dados = st.tabs(
-    ["Visão geral", "Análise por prato", "Causa raiz", "Plano de ação", "Segurança", "Sobre os dados"]
+aba_geral, aba_pratos, aba_causa, aba_plano, aba_suspeitas, aba_seguranca, aba_dados = st.tabs(
+    ["Visão geral", "Análise por prato", "Causa raiz", "Plano de ação", "Suspeitas", "Segurança", "Sobre os dados"]
 )
 
 with aba_geral:
     for alerta in alertas_tendencia(df):
         st.warning(f"**Alerta de tendência.** {alerta.texto()}", icon="📈")
-    st.subheader("Nota média por semana")
-    semanal = nota_por_semana(df)
-    fig = px.line(semanal, x="semana", y="nota_media", markers=True, custom_data=["avaliacoes"])
+    st.subheader("Nota média por semana, com e sem avaliações suspeitas")
+    semanal = pd.concat([
+        nota_por_semana(df_todas).assign(Linha="Todas as avaliações"),
+        nota_por_semana(filtrar_suspeitas(df_todas, "medias_e_altas")).assign(Linha="Sem suspeitas médias e altas"),
+    ])
+    fig = px.line(semanal, x="semana", y="nota_media", color="Linha", markers=True, custom_data=["avaliacoes"],
+                  color_discrete_map={"Todas as avaliações": COR_NEUTRA, "Sem suspeitas médias e altas": COR_PRINCIPAL})
     fig.update_traces(
-        line_color=COR_PRINCIPAL,
-        hovertemplate="Semana de %{x|%d/%m}<br>Nota média: %{y:.2f}<br>%{customdata[0]} avaliações<extra></extra>",
+        hovertemplate="Semana de %{x|%d/%m}<br>Nota média: %{y:.2f}<br>%{customdata[0]} avaliações<extra>%{fullData.name}</extra>",
     )
-    fig.update_layout(yaxis_title="Nota média (1 a 5)", xaxis_title=None, yaxis_range=[1, 5], margin=dict(t=10))
+    fig.update_layout(yaxis_title="Nota média (1 a 5)", xaxis_title=None, yaxis_range=[1, 5], margin=dict(t=10),
+                      legend_title=None, legend=dict(orientation="h", y=1.12))
     st.plotly_chart(fig, width="stretch")
-    st.caption("Etapa 4 acrescenta a comparação com e sem avaliações suspeitas.")
+    st.caption("Os cartões e os demais gráficos seguem o filtro da barra lateral; este gráfico mostra sempre as duas linhas.")
 
     esq, dir_ = st.columns([2, 3])
     with esq:
@@ -293,7 +329,7 @@ with aba_pratos:
                 st.markdown(f"**{int(linha['nota'])}★** — {linha['texto']}")
 
 def desenhar_causa_raiz() -> None:
-    causas = calcular_causas(str(cfg.db_path), cfg.db_path.stat().st_mtime)
+    causas = calcular_causas(str(cfg.db_path), cfg.db_path.stat().st_mtime, modo)
     pedidos = causas["pedidos"]
     com_pedido = df[df["tem_pedido"]]
     st.subheader("Em que condições cada problema aparece")
@@ -378,6 +414,81 @@ with aba_causa:
 
 with aba_plano:
     desenhar_plano_de_acao()
+
+
+def desenhar_suspeitas() -> None:
+    st.subheader("Avaliações suspeitas")
+    st.info(
+        "A ferramenta só **sinaliza**. Nada é apagado, ocultado nem contestado automaticamente: decidir se vale "
+        "contestar uma avaliação na plataforma é sempre do dono.",
+        icon="ℹ️",
+    )
+    episodios = episodios_suspeitos(df_todas)
+    if episodios:
+        for e in episodios:
+            st.error(f"**Possível ataque de avaliações.** {e.texto()}", icon="🚨")
+    else:
+        st.success("Nenhum conjunto de avaliações suspeitas encontrado.")
+
+    comp = comparar_metricas(df_todas)
+    c1, c2, c3 = st.columns(3)
+    c1.metric("Nota média sem suspeitas", formatar_nota(comp.nota_sem_suspeitas, 2),
+              delta=f"{comp.diferenca_nota:+.2f}".replace(".", ",") + " contra todas",
+              help=f"Com todas as avaliações: {formatar_nota(comp.nota_todas, 2)}.")
+    c2.metric("Negativas sem suspeitas", formatar_pct(comp.negativas_sem_suspeitas.pct),
+              help=f"Com todas: {comp.negativas_todas.texto()}. Sem suspeitas: {comp.negativas_sem_suspeitas.texto()}.")
+    c3.metric("Avaliações suspeitas (médias e altas)", comp.removidas,
+              help=f"De um total de {comp.avaliacoes_todas} avaliações.")
+
+    st.markdown("##### Avaliações de nota 1 e 2 por dia")
+    baixas = df_todas[df_todas["nota"] <= 2].assign(
+        dia=lambda d: d["criado_em"].dt.normalize(),
+        Situação=lambda d: d["suspeita_nivel"].map(lambda n: "Suspeita média ou alta" if n in ("médio", "alto") else "Demais"),
+    )
+    por_dia = baixas.groupby(["dia", "Situação"]).size().reset_index(name="avaliações")
+    fig = px.bar(por_dia, x="dia", y="avaliações", color="Situação",
+                 color_discrete_map={"Suspeita média ou alta": COR_PRINCIPAL, "Demais": COR_NEUTRA})
+    fig.update_layout(xaxis_title=None, yaxis_title="Avaliações de nota 1–2", margin=dict(t=10), legend_title=None,
+                      legend=dict(orientation="h", y=1.12))
+    st.plotly_chart(fig, width="stretch")
+
+    with st.expander("Como a detecção funciona"):
+        st.markdown(
+            "Cada avaliação soma pontos por sinal; o nível sai da soma "
+            f"(1–{LIMITE_MEDIO - 1} baixo, {LIMITE_MEDIO}–{LIMITE_ALTO - 1} médio, {LIMITE_ALTO}+ alto). "
+            "Nenhum sinal sozinho passa de médio.\n\n"
+            f"- **Sem pedido correspondente** ({PONTOS['sem_pedido']} pontos)\n"
+            f"- **Conta nova** (menos de 7 dias e no máximo 1 pedido) ({PONTOS['conta_nova']} ponto): "
+            "cliente novo avaliando o primeiro pedido é normal, por isso pesa pouco\n"
+            f"- **Rajada de notas baixas** ({PONTOS['rajada']} ponto): o dia tem muito mais avaliações de nota 1–2 "
+            "do que o normal\n"
+            f"- **Texto muito parecido** ({PONTOS['texto_parecido']} pontos): quase igual ao de outras avaliações, "
+            "de pelo menos 3 contas diferentes, em até 7 dias\n\n"
+            "Limites: textos reescritos por um modelo de linguagem escapam do sinal de similaridade, e um ataque "
+            "lento e espalhado escapa do sinal de rajada. Pode haver falsos positivos, como elogios genéricos "
+            "iguais; por isso cada alerta mostra o motivo."
+        )
+
+    st.markdown("##### Lista de avaliações suspeitas")
+    escolha = st.multiselect("Níveis", ["alto", "médio", "baixo"], default=["alto", "médio"])
+    lista = df_todas[df_todas["suspeita_nivel"].isin(escolha)].sort_values(["suspeita_pontos", "criado_em"], ascending=[False, True])
+    tabela = pd.DataFrame({
+        "Data": lista["criado_em"].dt.strftime("%d/%m/%Y %H:%M"),
+        "Nota": lista["nota"],
+        "Nível": lista["suspeita_nivel"],
+        "Pontos": lista["suspeita_pontos"],
+        "Motivos": lista["suspeita_motivos"].map(" ".join),
+        "Texto": lista["texto"],
+    })
+    st.dataframe(tabela, hide_index=True, width="stretch", height=380,
+                 column_config={"Motivos": st.column_config.TextColumn(width="large"),
+                                "Texto": st.column_config.TextColumn(width="large")})
+    st.download_button("Baixar a lista (CSV) para anexar a uma contestação", tabela.to_csv(index=False).encode("utf-8-sig"),
+                       file_name="avaliacoes_suspeitas.csv", mime="text/csv")
+
+
+with aba_suspeitas:
+    desenhar_suspeitas()
 
 with aba_seguranca:
     st.subheader("Texto de avaliação é dado, nunca instrução")

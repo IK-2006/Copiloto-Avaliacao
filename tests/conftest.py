@@ -5,6 +5,7 @@ import pytest
 
 from copiloto import db
 from copiloto.analytics.base import carregar_avaliacoes
+from copiloto.analytics.suspeitas import com_suspeitas
 from copiloto.classify import classificar_pendentes
 from copiloto.datagen.gerador import SEED_PADRAO, gerar
 from copiloto.llm.rules import ProvedorRegras
@@ -29,3 +30,8 @@ def con_classificada(dados):
 @pytest.fixture(scope="session")
 def df_avaliacoes(con_classificada):
     return carregar_avaliacoes(con_classificada)
+
+
+@pytest.fixture(scope="session")
+def df_suspeitas(df_avaliacoes):
+    return com_suspeitas(df_avaliacoes)

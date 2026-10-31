@@ -11,7 +11,11 @@ import json
 import sqlite3
 from pathlib import Path
 
+import pandas as pd
+
 from copiloto import config, db
+from copiloto.analytics.base import carregar_avaliacoes
+from copiloto.analytics.suspeitas import com_suspeitas
 
 
 def _prf(tp: int, fp: int, fn: int) -> dict[str, float]:
@@ -60,10 +64,29 @@ def comparar(con: sqlite3.Connection, caminho_gabarito: str | Path) -> dict:
     }
 
 
+def comparar_suspeitas(df: pd.DataFrame, caminho_gabarito: str | Path) -> dict:
+    """Quantas das avaliações falsas plantadas a detecção pegou, e quantas genuínas acusou sem razão.
+
+    `df` precisa ter as colunas de `analytics.suspeitas.com_suspeitas`.
+    """
+    gab = {int(k): v for k, v in json.loads(Path(caminho_gabarito).read_text(encoding="utf-8"))["avaliacoes"].items()}
+    falsa = df["avaliacao_id"].map(lambda i: gab[int(i)]["falsa"]).astype(bool)
+    resultado: dict = {"avaliacoes_falsas": int(falsa.sum()), "avaliacoes_genuinas": int((~falsa).sum())}
+    for nome, niveis in (("medio_ou_alto", ("médio", "alto")), ("alto", ("alto",))):
+        previsto = df["suspeita_nivel"].isin(niveis)
+        tp, fp, fn = int((previsto & falsa).sum()), int((previsto & ~falsa).sum()), int((~previsto & falsa).sum())
+        resultado[nome] = {"falsas_detectadas": tp, "genuinas_acusadas": fp, "falsas_perdidas": fn, **_prf(tp, fp, fn)}
+    return resultado
+
+
 def main() -> None:
     cfg = config.carregar()
     con = db.conectar(cfg.db_path)
-    resultado = comparar(con, cfg.db_path.parent / "plantados.json")
+    gabarito = cfg.db_path.parent / "plantados.json"
+    resultado = {
+        "classificador": comparar(con, gabarito),
+        "suspeitas": comparar_suspeitas(com_suspeitas(carregar_avaliacoes(con)), gabarito),
+    }
     print(json.dumps(resultado, ensure_ascii=False, indent=2))
 
 

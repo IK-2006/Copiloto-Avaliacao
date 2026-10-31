@@ -14,7 +14,7 @@ de avaliações falsas.
 |---|---|---|
 | 1 | Dados fictícios, classificação, análise por prato, dashboard básico | **pronta** |
 | 2 | Causa raiz cruzando avaliações e dados dos pedidos; alertas de tendência | **pronta** |
-| 3 | Plano de ação priorizado e sugestões de melhoria dos pratos | a fazer |
+| 3 | Plano de ação priorizado pelo impacto na nota e sugestões de melhoria dos pratos | **pronta** |
 | 4 | Detecção de avaliações suspeitas (métricas com e sem elas) | a fazer |
 | 5 | Respostas sugeridas com aprovação e perguntas em linguagem natural | a fazer |
 | 6 | Resumo semanal no n8n e deploy online | a fazer |
@@ -122,6 +122,49 @@ causa, não prova que ela é a causa.
 
 Os **alertas de tendência** comparam os últimos 28 dias com o período anterior e só disparam com pelo menos
 6 reclamações recentes, aumento de 40% ou mais e teste de Fisher abaixo de 5%.
+
+## Plano de ação e impacto na nota
+
+A aba **Plano de ação** lista o que resolver primeiro, em ordem de efeito estimado na nota média
+(`copiloto/analytics/impacto.py`). Nos dados fictícios, sobre as 630 avaliações de pedidos (nota média de
+hoje: 3,79):
+
+| Prioridade | Ação | Nota (cenário completo) | Ganho conservador |
+|---|---|---|---|
+| 1 | Resolver atrasos, comida fria e comida murcha em pedidos de sexta-feira, à noite (79 avaliações) | 3,79 → 4,00 | +0,10 |
+| 2 | Resolver atrasos (demais casos) | 4,00 → 4,07 | +0,04 |
+| 3 | Melhorar Batata Frita | 4,07 → 4,14 | +0,03 |
+| … | pedidos errados, atendimento, açaí, sabor, embalagem (todos com baixa confiança) | até 4,29 | |
+
+Com o plano inteiro, a nota iria de 3,79 para **4,29 no cenário completo** e **4,04 no conservador**.
+
+**Como a conta é feita:**
+
+1. Quem não reclama de nada dá, em média, nota 4,28: essa é a referência de "experiência boa".
+2. Cada reclamação (avaliação, tema) é uma unidade que uma ação pode resolver. Resolvê-la é supor que a
+   avaliação passaria a valer a nota de referência. Se a avaliação cita vários problemas, a distância até
+   a referência é dividida entre eles, e avaliações que já estão acima da referência não mudam.
+3. As ações entram de forma gulosa: a próxima é a que mais eleva a média **dado o que as anteriores já
+   resolveram**, para não contar a mesma avaliação duas vezes. A soma dos ganhos bate com um recálculo
+   independente da média (`tests/test_impacto.py`).
+4. O **cenário conservador** supõe só metade do ganho, porque nem todo cliente volta a dar a nota de quem
+   nunca reclamou.
+
+As ações vêm da causa raiz (temas que compartilham o mesmo dia e horário viram uma ação só), dos pratos com
+problemas citados e do que sobra de cada tema. Uma ação só entra se resolver pelo menos 6 reclamações novas
+e elevar a nota em pelo menos 0,005; as de menos de 20 avaliações aparecem com aviso de baixa confiança.
+
+**É uma estimativa, não uma previsão.** Supõe que quem reclamou de X avaliaria como quem não reclama de nada
+se X sumisse e que o resto fica igual. Não mede o efeito de nenhuma medida específica. Hoje o cálculo inclui
+as avaliações do ataque (P3) que têm pedido; sem as falsas, a nota de hoje e a referência são mais altas, e a
+Etapa 4 permitirá tirar as suspeitas do cálculo.
+
+### Sugestões de melhoria
+
+Cada ação traz sugestões **a avaliar**, com o motivo e o indicador para saber se funcionou. Para a batata
+murcha, por exemplo: embalagem com furos de ventilação, molho e sal à parte, ajuste do tempo de fritura. Elas
+vêm de um **catálogo escrito à mão** (`copiloto/sugestoes.py`), escolhido por regra conforme o tema, o prato e
+as condições do segmento (pico, distância). Não há IA nesse passo e nada disso é garantia de resultado.
 
 ## Qualidade do classificador
 

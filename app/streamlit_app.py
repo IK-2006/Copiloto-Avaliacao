@@ -24,11 +24,14 @@ from copiloto.analytics.causa_raiz import (
     evolucao_tempos,
     rotulo_evento_tema,
 )
+from copiloto.analytics.impacto import Acao, Plano, montar_plano
 from copiloto.analytics.pratos import AnalisePrato, analise_por_prato, ranking_pratos
 from copiloto.analytics.series import nota_por_semana, ranking_temas, resumo_geral, temas_por_semana
 from copiloto.analytics.tendencias import alertas_tendencia
 from copiloto.dominio import ROTULO_TEMA
 from copiloto.stats import formatar_nota, formatar_pct
+from copiloto.sugestoes import AVISO as AVISO_SUGESTOES
+from copiloto.sugestoes import sugestoes_para
 
 st.set_page_config(page_title="Copiloto de Avaliações", page_icon="🍽️", layout="wide")
 
@@ -61,6 +64,82 @@ def calcular_causas(db_path: str, versao_arquivo: float):
         "pratos": {p: causas_do_prato(avaliacoes, pedidos, p) for p in pratos},
         "lentas": causas_da_entrega_lenta(pedidos),
     }
+
+
+@st.cache_data(show_spinner="Calculando o plano de ação…")
+def calcular_plano(db_path: str, versao_arquivo: float) -> tuple[Plano, dict[str, str]]:
+    con = db.conectar(db_path)
+    try:
+        avaliacoes, pedidos = carregar_avaliacoes(con), carregar_pedidos(con)
+        categorias = {r["nome"]: r["categoria"] for r in con.execute("SELECT nome, categoria FROM cardapio")}
+    finally:
+        con.close()
+    return montar_plano(avaliacoes, pedidos), categorias
+
+
+def cartao_acao(acao: Acao, categorias: dict[str, str]) -> None:
+    cand = acao.candidato
+    with st.container(border=True):
+        st.markdown(f"#### {acao.prioridade}. {acao.titulo}")
+        c1, c2, c3 = st.columns(3)
+        c1.metric("Nota no cenário completo", f"{formatar_nota(acao.nota_antes, 2)} → {formatar_nota(acao.nota_depois, 2)}",
+                  help="Do ponto em que as ações anteriores já foram aplicadas até esta ação resolvida.")
+        c2.metric("Ganho no cenário conservador", f"+{formatar_nota(acao.ganho_conservador, 2)}",
+                  help=f"Metade do ganho completo (+{formatar_nota(acao.ganho, 2)}).")
+        c3.metric("Avaliações afetadas", f"{acao.avaliacoes_afetadas.k} de {acao.avaliacoes_afetadas.n}",
+                  help="Avaliações de pedidos que citam este problema e ainda não tinham sido resolvidas por ações anteriores.")
+        if acao.baixa_confianca:
+            st.warning(f"Baixa confiança: só {acao.avaliacoes_afetadas.k} avaliações sustentam esta estimativa.")
+        if cand.tipo == "segmento":
+            for tema, padrao in cand.padroes:
+                st.write(padrao.texto(rotulo_evento_tema(tema)))
+        elif cand.tipo == "prato":
+            partes = ", ".join(f"{ROTULO_TEMA[t].lower()} ({n})" for t, n in cand.problemas_do_prato)
+            st.write(f"Reclamações citadas sobre este prato: {partes}.")
+        else:
+            st.write("Reclamações sem um dia, horário ou prato que as concentre; aparecem espalhadas.")
+        with st.expander("Sugestões a avaliar"):
+            for s in sugestoes_para(cand, categorias):
+                st.markdown(f"**{s.texto}**  \n*Por quê:* {s.porque}  \n*Como saber se funcionou:* {s.como_medir}")
+            st.caption(AVISO_SUGESTOES)
+
+
+def desenhar_plano_de_acao() -> None:
+    plano, categorias = calcular_plano(str(cfg.db_path), cfg.db_path.stat().st_mtime)
+    st.subheader("O que resolver primeiro")
+    if not plano.acoes:
+        st.info("Não há reclamações suficientes para montar um plano.")
+        return
+    c1, c2, c3 = st.columns(3)
+    c1.metric("Nota média hoje", formatar_nota(plano.nota_atual, 2), help=f"{plano.avaliacoes} avaliações de pedidos reais.")
+    c2.metric("Com o plano, cenário conservador", formatar_nota(plano.nota_final_conservadora, 2))
+    c3.metric("Com o plano, cenário completo", formatar_nota(plano.nota_final, 2))
+    st.caption(
+        "Estimativa, não previsão. Considera só avaliações de pedidos (sem pedido não dá para localizar a causa); "
+        "a Etapa 4 permitirá tirar as suspeitas."
+    )
+    with st.expander("Como a estimativa foi calculada"):
+        st.markdown(
+            f"1. Quem **não reclama de nada** dá, em média, nota **{formatar_nota(plano.nota_referencia, 2)}**. "
+            "Usamos isso como a nota de quem teve uma experiência boa.\n"
+            "2. Para cada problema, supomos que, **se ele sumisse**, as avaliações que o citam passariam a valer "
+            "essa nota. Se uma avaliação cita mais de um problema, a diferença é dividida entre eles.\n"
+            "3. As ações vêm em ordem: primeiro a que mais eleva a média, depois a que mais eleva **dado o que "
+            "as anteriores já resolveram**, para não contar a mesma avaliação duas vezes.\n"
+            "4. Como nem todo cliente volta a dar a nota de quem nunca reclamou, mostramos também um cenário "
+            "**conservador**, com metade do ganho.\n\n"
+            "Isto é uma conta, não um teste: ela supõe que o resto fica igual e não mede o efeito de nenhuma medida "
+            "específica."
+        )
+    ganhos = pd.DataFrame({"Ação": [f"{a.prioridade}. {a.titulo}" for a in plano.acoes],
+                           "Ganho": [a.ganho for a in plano.acoes]})
+    fig = px.bar(ganhos.iloc[::-1], x="Ganho", y="Ação", orientation="h")
+    fig.update_traces(marker_color=COR_PRINCIPAL, hovertemplate="%{y}<br>+%{x:.2f} na nota média<extra></extra>")
+    fig.update_layout(xaxis_title="Ganho estimado na nota média (cenário completo)", yaxis_title=None,
+                      margin=dict(t=10), height=120 + 40 * len(ganhos))
+    st.plotly_chart(fig, width="stretch")
+    for acao in plano.acoes:
+        cartao_acao(acao, categorias)
 
 
 def cartao_padrao(padrao: Padrao, rotulo_evento: str, **kwargs) -> None:
@@ -109,8 +188,8 @@ c2.metric("Nota média", formatar_nota(geral["nota_media"]))
 c3.metric("Avaliações negativas", formatar_pct(geral["negativas"].pct), help=geral["negativas"].texto())
 c4.metric("Com pedido associado", formatar_pct(geral["com_pedido"].pct), help=geral["com_pedido"].texto())
 
-aba_geral, aba_pratos, aba_causa, aba_seguranca, aba_dados = st.tabs(
-    ["Visão geral", "Análise por prato", "Causa raiz", "Segurança", "Sobre os dados"]
+aba_geral, aba_pratos, aba_causa, aba_plano, aba_seguranca, aba_dados = st.tabs(
+    ["Visão geral", "Análise por prato", "Causa raiz", "Plano de ação", "Segurança", "Sobre os dados"]
 )
 
 with aba_geral:
@@ -296,6 +375,9 @@ def desenhar_causa_raiz() -> None:
 
 with aba_causa:
     desenhar_causa_raiz()
+
+with aba_plano:
+    desenhar_plano_de_acao()
 
 with aba_seguranca:
     st.subheader("Texto de avaliação é dado, nunca instrução")

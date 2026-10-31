@@ -1,0 +1,10 @@
+[project]
+name = "copiloto-avaliacoes"
+version = "0.1.0"
+description = "Copiloto de Avaliações para Restaurantes: transforma avaliações em decisões priorizadas."
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-q"

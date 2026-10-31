@@ -1,0 +1,8562 @@
+{
+ "resumo": {
+  "restaurante": "Cantina Sabor da Vila",
+  "seed": 2026,
+  "periodo": [
+   "2026-05-01",
+   "2026-10-31"
+  ],
+  "pedidos": 2987,
+  "avaliacoes": 654,
+  "avaliacoes_falsas": 46,
+  "avaliacoes_com_injecao": [
+   274,
+   567
+  ],
+  "ataque_dias": [
+   "2026-10-14",
+   "2026-10-15",
+   "2026-10-16"
+  ]
+ },
+ "padroes": [
+  {
+   "id": "P1",
+   "titulo": "Batata frita murcha/fria em entregas longas",
+   "regra": "80% dos pedidos com batata e entrega > 40 min têm problema (10% nos demais).",
+   "onde_ver": "Análise por prato → Batata Frita"
+  },
+  {
+   "id": "P2",
+   "titulo": "Atrasos e comida fria nas sextas à noite",
+   "regra": "Sexta, 18h–22h: +16 min de preparo e trânsito; a partir de 01/10/2026 mais +16 min.",
+   "onde_ver": "Causa raiz (Etapa 2) e evolução semanal de atraso"
+  },
+  {
+   "id": "P3",
+   "titulo": "Ataque de avaliações falsas",
+   "regra": "46 avaliações de nota 1–2 entre 14 e 16/10/2026, textos quase idênticos, contas novas, a maioria sem pedido.",
+   "onde_ver": "Detecção de suspeitas (Etapa 4) e queda da nota em outubro"
+  },
+  {
+   "id": "P4",
+   "titulo": "Açaí derretido em entregas > 5 km",
+   "regra": "90% dos pedidos com açaí e distância > 5 km têm problema (3% nos demais).",
+   "onde_ver": "Análise por prato → Açaí 500ml"
+  },
+  {
+   "id": "P5",
+   "titulo": "Pratos com poucas avaliações",
+   "regra": "Pudim e Salada Caesar quase não são pedidos: aparecem com aviso de baixa confiança.",
+   "onde_ver": "Análise por prato"
+  },
+  {
+   "id": "P6",
+   "titulo": "Tentativas de prompt injection",
+   "regra": "Duas avaliações reais negativas trazem 'ignore as instruções anteriores…'.",
+   "onde_ver": "Painel de segurança; testes de injeção"
+  }
+ ],
+ "avaliacoes": {
+  "1": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Brownie com Sorvete",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "2": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "3": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": []
+    },
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "4": {
+   "sentimento": "positivo",
+   "temas": [
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    },
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "5": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "6": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    },
+    {
+     "prato": "Salada Caesar",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "7": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "8": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "9": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    },
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "10": {
+   "sentimento": "negativo",
+   "temas": [
+    "temperatura",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "temperatura",
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "11": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "12": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Brownie com Sorvete",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "13": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Lasanha",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "14": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Onion Rings",
+     "problemas": []
+    },
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "15": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Burger Veggie",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "16": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "17": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Salada Caesar",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "18": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Margherita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "19": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Burger Veggie",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "20": {
+   "sentimento": "negativo",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Spaghetti à Bolonhesa",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "21": {
+   "sentimento": "neutro",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [
+    {
+     "prato": "Milk-shake de Chocolate",
+     "problemas": []
+    },
+    {
+     "prato": "Pizza Calabresa",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "22": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    },
+    {
+     "prato": "Frango Crocante",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "23": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Pizza Quatro Queijos",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "24": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "temperatura"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "25": {
+   "sentimento": "positivo",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "26": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Burger Veggie",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "27": {
+   "sentimento": "neutro",
+   "temas": [
+    "sabor"
+   ],
+   "pratos": [
+    {
+     "prato": "Brownie com Sorvete",
+     "problemas": []
+    },
+    {
+     "prato": "Pudim",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "28": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "29": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "30": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "31": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Brownie com Sorvete",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "32": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Margherita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "33": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "34": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Smash Duplo",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "35": {
+   "sentimento": "negativo",
+   "temas": [
+    "quantidade",
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "36": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "37": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Smash Duplo",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "38": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "39": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "40": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "41": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Burger Veggie",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "42": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Burger Veggie",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "43": {
+   "sentimento": "negativo",
+   "temas": [
+    "pedido_errado",
+    "temperatura",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "temperatura",
+      "textura"
+     ]
+    },
+    {
+     "prato": "Pizza Margherita",
+     "problemas": [
+      "pedido_errado"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "44": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "45": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Spaghetti à Bolonhesa",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "46": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "47": {
+   "sentimento": "positivo",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Smash Duplo",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "48": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    },
+    {
+     "prato": "Lasanha",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "49": {
+   "sentimento": "neutro",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "50": {
+   "sentimento": "neutro",
+   "temas": [
+    "atraso",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Pizza Quatro Queijos",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "51": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Frango Crocante",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "52": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Milk-shake de Chocolate",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "53": {
+   "sentimento": "negativo",
+   "temas": [
+    "atendimento",
+    "atraso",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "54": {
+   "sentimento": "neutro",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "55": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "56": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Salada Caesar",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "57": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "58": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "59": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Calabresa",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "60": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    },
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "61": {
+   "sentimento": "negativo",
+   "temas": [
+    "temperatura",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "temperatura",
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "62": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Pizza Margherita",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "63": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "64": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Quatro Queijos",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "65": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "66": {
+   "sentimento": "neutro",
+   "temas": [
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "67": {
+   "sentimento": "positivo",
+   "temas": [
+    "atendimento"
+   ],
+   "pratos": [
+    {
+     "prato": "Spaghetti à Bolonhesa",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "68": {
+   "sentimento": "negativo",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "69": {
+   "sentimento": "negativo",
+   "temas": [
+    "pedido_errado"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "70": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "71": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "72": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Spaghetti à Bolonhesa",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "73": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "74": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Milk-shake de Chocolate",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "75": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    },
+    {
+     "prato": "Frango Crocante",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "76": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Margherita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "77": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Margherita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "78": {
+   "sentimento": "negativo",
+   "temas": [
+    "atendimento"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "79": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "80": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "81": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "82": {
+   "sentimento": "positivo",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "83": {
+   "sentimento": "neutro",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": [
+      "temperatura"
+     ]
+    },
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "84": {
+   "sentimento": "positivo",
+   "temas": [
+    "atraso",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": []
+    },
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "85": {
+   "sentimento": "negativo",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "86": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "87": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "temperatura",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    },
+    {
+     "prato": "Pizza Margherita",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "88": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Margherita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "89": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": []
+    },
+    {
+     "prato": "Frango Crocante",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "90": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Salada Caesar",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "91": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "92": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "93": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "94": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "95": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "96": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Frango Crocante",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "97": {
+   "sentimento": "neutro",
+   "temas": [
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    },
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "98": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "99": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Calabresa",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "100": {
+   "sentimento": "positivo",
+   "temas": [
+    "temperatura",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "temperatura"
+     ]
+    },
+    {
+     "prato": "Smash Duplo",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "101": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "102": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "103": {
+   "sentimento": "neutro",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "104": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Calabresa",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "105": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "106": {
+   "sentimento": "positivo",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Brownie com Sorvete",
+     "problemas": []
+    },
+    {
+     "prato": "Onion Rings",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "107": {
+   "sentimento": "negativo",
+   "temas": [
+    "embalagem"
+   ],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "108": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "109": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Salada Caesar",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "110": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "111": {
+   "sentimento": "neutro",
+   "temas": [
+    "sabor"
+   ],
+   "pratos": [
+    {
+     "prato": "Brownie com Sorvete",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "112": {
+   "sentimento": "positivo",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "113": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "114": {
+   "sentimento": "neutro",
+   "temas": [
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "115": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "116": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "117": {
+   "sentimento": "positivo",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [
+    {
+     "prato": "Brownie com Sorvete",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "118": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "119": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": []
+    },
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "120": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "121": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Margherita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "122": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "123": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "124": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [
+    {
+     "prato": "Pizza Quatro Queijos",
+     "problemas": []
+    },
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "125": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "126": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": []
+    },
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "127": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    },
+    {
+     "prato": "Smash Duplo",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "128": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Pizza Margherita",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "129": {
+   "sentimento": "positivo",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Pizza Calabresa",
+     "problemas": []
+    },
+    {
+     "prato": "Spaghetti à Bolonhesa",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "130": {
+   "sentimento": "neutro",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "131": {
+   "sentimento": "positivo",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [
+    {
+     "prato": "Pudim",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "132": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "133": {
+   "sentimento": "positivo",
+   "temas": [
+    "sabor"
+   ],
+   "pratos": [
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "134": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Frango Crocante",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "135": {
+   "sentimento": "neutro",
+   "temas": [
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "136": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "137": {
+   "sentimento": "neutro",
+   "temas": [
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "138": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": []
+    },
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "139": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "140": {
+   "sentimento": "negativo",
+   "temas": [
+    "sabor"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "141": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "142": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "143": {
+   "sentimento": "neutro",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "144": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "145": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "146": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Calabresa",
+     "problemas": []
+    },
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "147": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "148": {
+   "sentimento": "positivo",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": [
+      "temperatura"
+     ]
+    },
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "149": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "150": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Smash Duplo",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "151": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "152": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "153": {
+   "sentimento": "negativo",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "154": {
+   "sentimento": "negativo",
+   "temas": [
+    "atendimento",
+    "temperatura",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": []
+    },
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "155": {
+   "sentimento": "neutro",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Brownie com Sorvete",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "156": {
+   "sentimento": "negativo",
+   "temas": [
+    "sabor"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "157": {
+   "sentimento": "negativo",
+   "temas": [
+    "atendimento",
+    "atraso"
+   ],
+   "pratos": [
+    {
+     "prato": "Smash Duplo",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "158": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "159": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "160": {
+   "sentimento": "neutro",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "161": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "162": {
+   "sentimento": "negativo",
+   "temas": [
+    "pedido_errado"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "163": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pudim",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "164": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Brownie com Sorvete",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "165": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Smash Duplo",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "166": {
+   "sentimento": "negativo",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "167": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Smash Duplo",
+     "problemas": []
+    },
+    {
+     "prato": "Spaghetti à Bolonhesa",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "168": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "169": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "170": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "171": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "172": {
+   "sentimento": "neutro",
+   "temas": [
+    "sabor"
+   ],
+   "pratos": [
+    {
+     "prato": "Pizza Calabresa",
+     "problemas": [
+      "sabor"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "173": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "174": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "175": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Spaghetti à Bolonhesa",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "176": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "177": {
+   "sentimento": "negativo",
+   "temas": [
+    "temperatura",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "temperatura",
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "178": {
+   "sentimento": "neutro",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "179": {
+   "sentimento": "neutro",
+   "temas": [
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    },
+    {
+     "prato": "Smash Duplo",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "180": {
+   "sentimento": "positivo",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [
+    {
+     "prato": "Spaghetti à Bolonhesa",
+     "problemas": []
+    },
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "181": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "embalagem"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "182": {
+   "sentimento": "positivo",
+   "temas": [
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "183": {
+   "sentimento": "neutro",
+   "temas": [
+    "embalagem"
+   ],
+   "pratos": [
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "184": {
+   "sentimento": "positivo",
+   "temas": [
+    "sabor"
+   ],
+   "pratos": [
+    {
+     "prato": "Burger Veggie",
+     "problemas": [
+      "sabor"
+     ]
+    },
+    {
+     "prato": "Smash Duplo",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "185": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "186": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Smash Duplo",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "187": {
+   "sentimento": "positivo",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [
+    {
+     "prato": "Smash Duplo",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "188": {
+   "sentimento": "negativo",
+   "temas": [
+    "sabor"
+   ],
+   "pratos": [
+    {
+     "prato": "Onion Rings",
+     "problemas": [
+      "sabor"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "189": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Quatro Queijos",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "190": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "191": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "192": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "193": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Calabresa",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "194": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Quatro Queijos",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "195": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "196": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "197": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "198": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "199": {
+   "sentimento": "neutro",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Pizza Calabresa",
+     "problemas": []
+    },
+    {
+     "prato": "X-Bacon",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "200": {
+   "sentimento": "negativo",
+   "temas": [
+    "pedido_errado",
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "201": {
+   "sentimento": "negativo",
+   "temas": [
+    "atendimento",
+    "atraso"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "202": {
+   "sentimento": "neutro",
+   "temas": [
+    "atraso",
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "203": {
+   "sentimento": "negativo",
+   "temas": [
+    "atendimento",
+    "atraso"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "204": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "205": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "temperatura",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "206": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Onion Rings",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "207": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Burger Veggie",
+     "problemas": []
+    },
+    {
+     "prato": "Pizza Calabresa",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "208": {
+   "sentimento": "neutro",
+   "temas": [
+    "atendimento"
+   ],
+   "pratos": [
+    {
+     "prato": "Pizza Calabresa",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "209": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "210": {
+   "sentimento": "negativo",
+   "temas": [
+    "atendimento"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "211": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Spaghetti à Bolonhesa",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "212": {
+   "sentimento": "negativo",
+   "temas": [
+    "atendimento",
+    "temperatura",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "temperatura",
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "213": {
+   "sentimento": "neutro",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": []
+    },
+    {
+     "prato": "Pizza Margherita",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "214": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "215": {
+   "sentimento": "neutro",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [
+    {
+     "prato": "Onion Rings",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "216": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Burger Veggie",
+     "problemas": []
+    },
+    {
+     "prato": "Frango Crocante",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "217": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "218": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "219": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "220": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Frango Crocante",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "221": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "222": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "223": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Spaghetti à Bolonhesa",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "224": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "225": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "226": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Calabresa",
+     "problemas": []
+    },
+    {
+     "prato": "Pizza Quatro Queijos",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "227": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "228": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "229": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "230": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "231": {
+   "sentimento": "positivo",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "232": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Frango Crocante",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "233": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Frango Crocante",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "234": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "235": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Lasanha",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "236": {
+   "sentimento": "negativo",
+   "temas": [
+    "sabor"
+   ],
+   "pratos": [
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": [
+      "sabor"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "237": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": []
+    },
+    {
+     "prato": "Pizza Margherita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "238": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Margherita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "239": {
+   "sentimento": "negativo",
+   "temas": [
+    "sabor"
+   ],
+   "pratos": [
+    {
+     "prato": "Lasanha",
+     "problemas": []
+    },
+    {
+     "prato": "Smash Duplo",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "240": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Spaghetti à Bolonhesa",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "241": {
+   "sentimento": "neutro",
+   "temas": [
+    "textura"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "242": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "243": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Calabresa",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "244": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Frango Crocante",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "245": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [
+    {
+     "prato": "Frango Crocante",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "246": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    },
+    {
+     "prato": "Smash Duplo",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "247": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Smash Duplo",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "248": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Smash Duplo",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "249": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "250": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "251": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "252": {
+   "sentimento": "positivo",
+   "temas": [
+    "pedido_errado"
+   ],
+   "pratos": [
+    {
+     "prato": "Onion Rings",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "253": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "254": {
+   "sentimento": "neutro",
+   "temas": [
+    "pedido_errado"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "255": {
+   "sentimento": "neutro",
+   "temas": [
+    "pedido_errado"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "256": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "temperatura"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "257": {
+   "sentimento": "neutro",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "258": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Smash Duplo",
+     "problemas": []
+    },
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "259": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "260": {
+   "sentimento": "neutro",
+   "temas": [
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "261": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Suco Natural",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "262": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Margherita",
+     "problemas": []
+    },
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "263": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Frango Crocante",
+     "problemas": []
+    },
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "264": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "265": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "266": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Margherita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "267": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pudim",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "268": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Onion Rings",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "269": {
+   "sentimento": "neutro",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Spaghetti à Bolonhesa",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "270": {
+   "sentimento": "positivo",
+   "temas": [
+    "sabor"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "271": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "272": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "273": {
+   "sentimento": "negativo",
+   "temas": [
+    "pedido_errado",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "274": {
+   "sentimento": "negativo",
+   "temas": [
+    "temperatura",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "temperatura",
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": true,
+   "nota": 3
+  },
+  "275": {
+   "sentimento": "neutro",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": []
+    },
+    {
+     "prato": "Smash Duplo",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "276": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "temperatura"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "277": {
+   "sentimento": "negativo",
+   "temas": [
+    "temperatura",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "278": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "279": {
+   "sentimento": "negativo",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "280": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Milk-shake de Chocolate",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "281": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "282": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "283": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "quantidade"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "quantidade"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "284": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "285": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "286": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "287": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Suco Natural",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "288": {
+   "sentimento": "positivo",
+   "temas": [
+    "quantidade"
+   ],
+   "pratos": [
+    {
+     "prato": "Pizza Calabresa",
+     "problemas": [
+      "quantidade"
+     ]
+    },
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "289": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "290": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "291": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Milk-shake de Chocolate",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "292": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "293": {
+   "sentimento": "negativo",
+   "temas": [
+    "sabor",
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Brownie com Sorvete",
+     "problemas": []
+    },
+    {
+     "prato": "Frango Crocante",
+     "problemas": [
+      "temperatura"
+     ]
+    },
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": [
+      "sabor"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "294": {
+   "sentimento": "neutro",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "295": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Frango Crocante",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "296": {
+   "sentimento": "positivo",
+   "temas": [
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "297": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "298": {
+   "sentimento": "neutro",
+   "temas": [
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "299": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "300": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "301": {
+   "sentimento": "positivo",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "302": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Margherita",
+     "problemas": []
+    },
+    {
+     "prato": "Salada Caesar",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "303": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "304": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "305": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": []
+    },
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "306": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "307": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Margherita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "308": {
+   "sentimento": "neutro",
+   "temas": [
+    "embalagem"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "309": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "310": {
+   "sentimento": "negativo",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Frango Crocante",
+     "problemas": [
+      "temperatura"
+     ]
+    },
+    {
+     "prato": "X-Bacon",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "311": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "312": {
+   "sentimento": "neutro",
+   "temas": [
+    "atendimento"
+   ],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "313": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "314": {
+   "sentimento": "negativo",
+   "temas": [
+    "pedido_errado"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "315": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Suco Natural",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "316": {
+   "sentimento": "neutro",
+   "temas": [
+    "embalagem"
+   ],
+   "pratos": [
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "317": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "318": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Frango Crocante",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "319": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Pizza Calabresa",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "320": {
+   "sentimento": "neutro",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "321": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "322": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "323": {
+   "sentimento": "neutro",
+   "temas": [
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": []
+    },
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "324": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "325": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Onion Rings",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "326": {
+   "sentimento": "neutro",
+   "temas": [
+    "sabor"
+   ],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": [
+      "sabor"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "327": {
+   "sentimento": "positivo",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "328": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "329": {
+   "sentimento": "neutro",
+   "temas": [
+    "quantidade"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    },
+    {
+     "prato": "Brownie com Sorvete",
+     "problemas": [
+      "quantidade"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "330": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "331": {
+   "sentimento": "positivo",
+   "temas": [
+    "embalagem"
+   ],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": []
+    },
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "332": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "333": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pudim",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "334": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "335": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "336": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Smash Duplo",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "337": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Calabresa",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "338": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "339": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Margherita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "340": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "341": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Suco Natural",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "342": {
+   "sentimento": "positivo",
+   "temas": [
+    "atraso",
+    "temperatura"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "343": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Quatro Queijos",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "344": {
+   "sentimento": "negativo",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Frango Crocante",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "345": {
+   "sentimento": "positivo",
+   "temas": [
+    "atraso",
+    "temperatura",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "346": {
+   "sentimento": "positivo",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "347": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "348": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Smash Duplo",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "349": {
+   "sentimento": "negativo",
+   "temas": [
+    "sabor",
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "350": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "351": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Onion Rings",
+     "problemas": []
+    },
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "352": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "353": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "354": {
+   "sentimento": "neutro",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "355": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "356": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Margherita",
+     "problemas": []
+    },
+    {
+     "prato": "Suco Natural",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "357": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "358": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "359": {
+   "sentimento": "neutro",
+   "temas": [
+    "pedido_errado"
+   ],
+   "pratos": [
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "360": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Onion Rings",
+     "problemas": []
+    },
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "361": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Burger Veggie",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "362": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "363": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "364": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "pedido_errado"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "365": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "366": {
+   "sentimento": "neutro",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "367": {
+   "sentimento": "neutro",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Pizza Margherita",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "368": {
+   "sentimento": "negativo",
+   "temas": [
+    "temperatura",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "temperatura",
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "369": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "370": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "371": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "372": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "373": {
+   "sentimento": "neutro",
+   "temas": [
+    "atraso",
+    "embalagem"
+   ],
+   "pratos": [
+    {
+     "prato": "Suco Natural",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "374": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "375": {
+   "sentimento": "neutro",
+   "temas": [
+    "atendimento"
+   ],
+   "pratos": [
+    {
+     "prato": "Frango Crocante",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "376": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "377": {
+   "sentimento": "neutro",
+   "temas": [
+    "temperatura",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": [
+      "temperatura"
+     ]
+    },
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "378": {
+   "sentimento": "neutro",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "379": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "380": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "381": {
+   "sentimento": "neutro",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "382": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "383": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "384": {
+   "sentimento": "positivo",
+   "temas": [
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "385": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "386": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "387": {
+   "sentimento": "positivo",
+   "temas": [
+    "sabor"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "388": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Calabresa",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "389": {
+   "sentimento": "neutro",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "390": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "sabor"
+   ],
+   "pratos": [
+    {
+     "prato": "Pizza Margherita",
+     "problemas": [
+      "sabor"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "391": {
+   "sentimento": "positivo",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [
+    {
+     "prato": "Brownie com Sorvete",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "392": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "393": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "394": {
+   "sentimento": "neutro",
+   "temas": [
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    },
+    {
+     "prato": "Frango Crocante",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "395": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "temperatura"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "396": {
+   "sentimento": "neutro",
+   "temas": [
+    "pedido_errado"
+   ],
+   "pratos": [
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": [
+      "pedido_errado"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "397": {
+   "sentimento": "negativo",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "398": {
+   "sentimento": "positivo",
+   "temas": [
+    "atendimento",
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Pizza Calabresa",
+     "problemas": [
+      "temperatura"
+     ]
+    },
+    {
+     "prato": "Smash Duplo",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "399": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "400": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "401": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "402": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "403": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "404": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Calabresa",
+     "problemas": []
+    },
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "405": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "406": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "407": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "408": {
+   "sentimento": "negativo",
+   "temas": [
+    "pedido_errado"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "409": {
+   "sentimento": "negativo",
+   "temas": [
+    "atendimento",
+    "pedido_errado"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "pedido_errado"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "410": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Frango Crocante",
+     "problemas": []
+    },
+    {
+     "prato": "Smash Duplo",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "411": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "412": {
+   "sentimento": "positivo",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "413": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "414": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Margherita",
+     "problemas": []
+    },
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "415": {
+   "sentimento": "positivo",
+   "temas": [
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "416": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "417": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "418": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "temperatura"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "419": {
+   "sentimento": "positivo",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "X-Bacon",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "420": {
+   "sentimento": "neutro",
+   "temas": [
+    "embalagem",
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "421": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Spaghetti à Bolonhesa",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "422": {
+   "sentimento": "positivo",
+   "temas": [
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    },
+    {
+     "prato": "Suco Natural",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "423": {
+   "sentimento": "neutro",
+   "temas": [
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "424": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "425": {
+   "sentimento": "positivo",
+   "temas": [
+    "sabor"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "426": {
+   "sentimento": "neutro",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "427": {
+   "sentimento": "negativo",
+   "temas": [
+    "atendimento"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "428": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "429": {
+   "sentimento": "neutro",
+   "temas": [
+    "atendimento",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "430": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "431": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "temperatura",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "temperatura",
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "432": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "433": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "434": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Calabresa",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "435": {
+   "sentimento": "negativo",
+   "temas": [
+    "pedido_errado"
+   ],
+   "pratos": [
+    {
+     "prato": "Smash Duplo",
+     "problemas": [
+      "pedido_errado"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "436": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "437": {
+   "sentimento": "negativo",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "438": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": [
+      "temperatura"
+     ]
+    },
+    {
+     "prato": "Smash Duplo",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "439": {
+   "sentimento": "neutro",
+   "temas": [
+    "sabor"
+   ],
+   "pratos": [
+    {
+     "prato": "Brownie com Sorvete",
+     "problemas": [
+      "sabor"
+     ]
+    },
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "440": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Calabresa",
+     "problemas": []
+    },
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "441": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "442": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Milk-shake de Chocolate",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "443": {
+   "sentimento": "neutro",
+   "temas": [
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    },
+    {
+     "prato": "Milk-shake de Chocolate",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "444": {
+   "sentimento": "negativo",
+   "temas": [
+    "pedido_errado"
+   ],
+   "pratos": [
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "445": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    },
+    {
+     "prato": "Lasanha",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "446": {
+   "sentimento": "negativo",
+   "temas": [
+    "pedido_errado"
+   ],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": [
+      "pedido_errado"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "447": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "448": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "449": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    },
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "450": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "451": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "452": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pudim",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "453": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "454": {
+   "sentimento": "neutro",
+   "temas": [
+    "atendimento"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "455": {
+   "sentimento": "neutro",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [
+    {
+     "prato": "Lasanha",
+     "problemas": []
+    },
+    {
+     "prato": "Smash Duplo",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "456": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "457": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "458": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "459": {
+   "sentimento": "positivo",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Pudim",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "460": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "461": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "462": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "463": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "464": {
+   "sentimento": "positivo",
+   "temas": [
+    "temperatura",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "temperatura",
+      "textura"
+     ]
+    },
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    },
+    {
+     "prato": "Spaghetti à Bolonhesa",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "465": {
+   "sentimento": "negativo",
+   "temas": [
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "466": {
+   "sentimento": "positivo",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "467": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "468": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "469": {
+   "sentimento": "negativo",
+   "temas": [
+    "embalagem",
+    "sabor"
+   ],
+   "pratos": [
+    {
+     "prato": "Smash Duplo",
+     "problemas": [
+      "sabor"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "470": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "471": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Quatro Queijos",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "472": {
+   "sentimento": "neutro",
+   "temas": [
+    "embalagem"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "473": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "474": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "475": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "476": {
+   "sentimento": "neutro",
+   "temas": [
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "477": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "478": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "479": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "480": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "481": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "482": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "483": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Quatro Queijos",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "484": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "485": {
+   "sentimento": "negativo",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "486": {
+   "sentimento": "positivo",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Pizza Calabresa",
+     "problemas": [
+      "temperatura"
+     ]
+    },
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "487": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "488": {
+   "sentimento": "neutro",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [
+    {
+     "prato": "Pizza Calabresa",
+     "problemas": []
+    },
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "489": {
+   "sentimento": "neutro",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "490": {
+   "sentimento": "neutro",
+   "temas": [
+    "pedido_errado"
+   ],
+   "pratos": [
+    {
+     "prato": "Pizza Calabresa",
+     "problemas": []
+    },
+    {
+     "prato": "Pizza Margherita",
+     "problemas": [
+      "pedido_errado"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "491": {
+   "sentimento": "neutro",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "492": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "493": {
+   "sentimento": "neutro",
+   "temas": [
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "494": {
+   "sentimento": "negativo",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Smash Duplo",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "495": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "496": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "497": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "498": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "499": {
+   "sentimento": "neutro",
+   "temas": [
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    },
+    {
+     "prato": "Suco Natural",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "500": {
+   "sentimento": "negativo",
+   "temas": [
+    "pedido_errado",
+    "quantidade"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "501": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Spaghetti à Bolonhesa",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "502": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Pizza Margherita",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "503": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "temperatura",
+    "textura"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "504": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "temperatura",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "temperatura",
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "505": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "temperatura",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "temperatura",
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "506": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Onion Rings",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "507": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "508": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Calabresa",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "509": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "510": {
+   "sentimento": "negativo",
+   "temas": [
+    "atendimento"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "511": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "512": {
+   "sentimento": "neutro",
+   "temas": [
+    "sabor",
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "513": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "514": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "515": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    },
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "516": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "517": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    },
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "518": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Smash Duplo",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "519": {
+   "sentimento": "neutro",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Smash Duplo",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "520": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "521": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "522": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "523": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "524": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "525": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Burger Veggie",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "526": {
+   "sentimento": "negativo",
+   "temas": [
+    "atendimento",
+    "atraso",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "527": {
+   "sentimento": "positivo",
+   "temas": [
+    "temperatura",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "528": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    },
+    {
+     "prato": "Smash Duplo",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "529": {
+   "sentimento": "negativo",
+   "temas": [
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "530": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Quatro Queijos",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "531": {
+   "sentimento": "negativo",
+   "temas": [
+    "pedido_errado"
+   ],
+   "pratos": [
+    {
+     "prato": "Pizza Margherita",
+     "problemas": [
+      "pedido_errado"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "532": {
+   "sentimento": "positivo",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [
+    {
+     "prato": "Pizza Calabresa",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "533": {
+   "sentimento": "negativo",
+   "temas": [
+    "sabor"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "534": {
+   "sentimento": "neutro",
+   "temas": [
+    "quantidade"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "535": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Margherita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "536": {
+   "sentimento": "positivo",
+   "temas": [
+    "embalagem"
+   ],
+   "pratos": [
+    {
+     "prato": "Smash Duplo",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "537": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "538": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Margherita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "539": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Margherita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "540": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "541": {
+   "sentimento": "negativo",
+   "temas": [
+    "atendimento"
+   ],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "542": {
+   "sentimento": "negativo",
+   "temas": [
+    "atendimento"
+   ],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "543": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "544": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "545": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "546": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "547": {
+   "sentimento": "negativo",
+   "temas": [
+    "atendimento"
+   ],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "548": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "549": {
+   "sentimento": "negativo",
+   "temas": [
+    "atendimento"
+   ],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "550": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "551": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "552": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "553": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 2
+  },
+  "554": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "555": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Calabresa",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "556": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "557": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "558": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "559": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "560": {
+   "sentimento": "negativo",
+   "temas": [
+    "atendimento"
+   ],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "561": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "562": {
+   "sentimento": "neutro",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": [
+      "temperatura"
+     ]
+    },
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "563": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "564": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "565": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "566": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "567": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": true,
+   "nota": 3
+  },
+  "568": {
+   "sentimento": "negativo",
+   "temas": [
+    "atendimento"
+   ],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "569": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "570": {
+   "sentimento": "positivo",
+   "temas": [
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    },
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "571": {
+   "sentimento": "positivo",
+   "temas": [
+    "pedido_errado"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "572": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "573": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "574": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "575": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "576": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "577": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "578": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "579": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "580": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "581": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 2
+  },
+  "582": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "583": {
+   "sentimento": "negativo",
+   "temas": [
+    "atendimento"
+   ],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "584": {
+   "sentimento": "negativo",
+   "temas": [
+    "atendimento"
+   ],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "585": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "586": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Lasanha",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "587": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "588": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "589": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "590": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "591": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "592": {
+   "sentimento": "negativo",
+   "temas": [
+    "atendimento"
+   ],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "593": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "594": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "sabor",
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Burger Veggie",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "595": {
+   "sentimento": "negativo",
+   "temas": [
+    "atendimento"
+   ],
+   "pratos": [],
+   "falsa": true,
+   "injecao": false,
+   "nota": 1
+  },
+  "596": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "597": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "598": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "temperatura"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "599": {
+   "sentimento": "negativo",
+   "temas": [
+    "atendimento",
+    "atraso",
+    "temperatura"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "600": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "601": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Calabresa",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "602": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    },
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "603": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "604": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "605": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "606": {
+   "sentimento": "negativo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "607": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "608": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "609": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "610": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Calabresa",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "611": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Quatro Queijos",
+     "problemas": []
+    },
+    {
+     "prato": "Smash Duplo",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "612": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Lasanha",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "613": {
+   "sentimento": "positivo",
+   "temas": [
+    "atraso"
+   ],
+   "pratos": [
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "614": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Frango Crocante",
+     "problemas": []
+    },
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "615": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Burger Veggie",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "616": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Lasanha",
+     "problemas": [
+      "temperatura"
+     ]
+    },
+    {
+     "prato": "Pizza Margherita",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "617": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Quatro Queijos",
+     "problemas": []
+    },
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "618": {
+   "sentimento": "neutro",
+   "temas": [
+    "temperatura"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "619": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Spaghetti à Bolonhesa",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "620": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Milk-shake de Chocolate",
+     "problemas": []
+    },
+    {
+     "prato": "Spaghetti à Bolonhesa",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "621": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "622": {
+   "sentimento": "negativo",
+   "temas": [
+    "pedido_errado"
+   ],
+   "pratos": [
+    {
+     "prato": "Açaí 500ml",
+     "problemas": [
+      "pedido_errado"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "623": {
+   "sentimento": "neutro",
+   "temas": [
+    "quantidade"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "624": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Calabresa",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "625": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "626": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "627": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Frango Crocante",
+     "problemas": []
+    },
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "628": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Burger Veggie",
+     "problemas": []
+    },
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "629": {
+   "sentimento": "negativo",
+   "temas": [
+    "sabor",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "textura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "630": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "631": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "X-Burger Clássico",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "632": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "633": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    },
+    {
+     "prato": "Brownie com Sorvete",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "634": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Milk-shake de Chocolate",
+     "problemas": []
+    },
+    {
+     "prato": "Pizza Calabresa",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "635": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "636": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Brownie com Sorvete",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "637": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Spaghetti à Bolonhesa",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "638": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Frango Crocante",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "639": {
+   "sentimento": "positivo",
+   "temas": [
+    "temperatura",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "temperatura",
+      "textura"
+     ]
+    },
+    {
+     "prato": "Onion Rings",
+     "problemas": []
+    },
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "640": {
+   "sentimento": "positivo",
+   "temas": [
+    "atendimento"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    },
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 4
+  },
+  "641": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "642": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "643": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Pizza Quatro Queijos",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "644": {
+   "sentimento": "neutro",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "645": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "temperatura"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 2
+  },
+  "646": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "temperatura",
+    "textura"
+   ],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": [
+      "temperatura",
+      "textura"
+     ]
+    },
+    {
+     "prato": "X-Bacon",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "647": {
+   "sentimento": "positivo",
+   "temas": [
+    "atraso",
+    "temperatura"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "648": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "temperatura"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "649": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "temperatura"
+   ],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 1
+  },
+  "650": {
+   "sentimento": "negativo",
+   "temas": [
+    "atraso",
+    "temperatura"
+   ],
+   "pratos": [
+    {
+     "prato": "Frango Crocante",
+     "problemas": [
+      "temperatura"
+     ]
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 3
+  },
+  "651": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Batata Frita",
+     "problemas": []
+    },
+    {
+     "prato": "Suco Natural",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "652": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "X-Bacon",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "653": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  },
+  "654": {
+   "sentimento": "positivo",
+   "temas": [],
+   "pratos": [
+    {
+     "prato": "Refrigerante Lata",
+     "problemas": []
+    },
+    {
+     "prato": "Suco Natural",
+     "problemas": []
+    }
+   ],
+   "falsa": false,
+   "injecao": false,
+   "nota": 5
+  }
+ }
+}

@@ -11,6 +11,7 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
+from app import ui_perguntas, ui_respostas
 from copiloto import config, db
 from copiloto.analytics.base import carregar_avaliacoes, carregar_pedidos
 from copiloto.analytics.causa_raiz import (
@@ -50,7 +51,7 @@ COR_NEUTRA = "#a8a29e"
 
 
 @st.cache_data(show_spinner=False)
-def carregar(db_path: str, versao_arquivo: float) -> pd.DataFrame:
+def carregar(db_path: str, versao_arquivo: str) -> pd.DataFrame:
     """Todas as avaliações classificadas, já com os sinais de suspeita."""
     con = db.conectar(db_path)
     try:
@@ -59,7 +60,7 @@ def carregar(db_path: str, versao_arquivo: float) -> pd.DataFrame:
         con.close()
 
 
-def base_filtrada(db_path: str, versao_arquivo: float, modo: str) -> tuple[pd.DataFrame, pd.DataFrame]:
+def base_filtrada(db_path: str, versao_arquivo: str, modo: str) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Avaliações e pedidos sem o que o filtro de suspeitas tira da análise."""
     todas = carregar(db_path, versao_arquivo)
     avaliacoes = filtrar_suspeitas(todas, modo)
@@ -73,7 +74,7 @@ def base_filtrada(db_path: str, versao_arquivo: float, modo: str) -> tuple[pd.Da
 
 
 @st.cache_data(show_spinner="Procurando padrões nos pedidos…")
-def calcular_causas(db_path: str, versao_arquivo: float, modo: str):
+def calcular_causas(db_path: str, versao_arquivo: str, modo: str):
     """Causa raiz por tema (mecanismo e quando/onde), por prato e das entregas lentas."""
     avaliacoes, pedidos = base_filtrada(db_path, versao_arquivo, modo)
     pratos = sorted({i for itens in pedidos["itens"] for i in itens})
@@ -87,7 +88,7 @@ def calcular_causas(db_path: str, versao_arquivo: float, modo: str):
 
 
 @st.cache_data(show_spinner="Calculando o plano de ação…")
-def calcular_plano(db_path: str, versao_arquivo: float, modo: str) -> tuple[Plano, dict[str, str]]:
+def calcular_plano(db_path: str, versao_arquivo: str, modo: str) -> tuple[Plano, dict[str, str]]:
     avaliacoes, pedidos = base_filtrada(db_path, versao_arquivo, modo)
     con = db.conectar(db_path)
     try:
@@ -125,7 +126,7 @@ def cartao_acao(acao: Acao, categorias: dict[str, str]) -> None:
 
 
 def desenhar_plano_de_acao() -> None:
-    plano, categorias = calcular_plano(str(cfg.db_path), cfg.db_path.stat().st_mtime, modo)
+    plano, categorias = calcular_plano(str(cfg.db_path), versao, modo)
     st.subheader("O que resolver primeiro")
     if not plano.acoes:
         st.info("Não há reclamações suficientes para montar um plano.")
@@ -190,7 +191,11 @@ if not cfg.db_path.exists():
     st.error("Banco de dados não encontrado. Rode `python -m copiloto.datagen` e `python -m copiloto.classify`.")
     st.stop()
 
-df_todas = carregar(str(cfg.db_path), cfg.db_path.stat().st_mtime)
+_con_versao = db.conectar(cfg.db_path)
+versao = db.versao_dos_dados(_con_versao)
+_con_versao.close()
+
+df_todas = carregar(str(cfg.db_path), versao)
 if df_todas.empty:
     st.error("Nenhuma avaliação classificada. Rode `python -m copiloto.classify`.")
     st.stop()
@@ -220,9 +225,9 @@ c2.metric("Nota média", formatar_nota(geral["nota_media"]))
 c3.metric("Avaliações negativas", formatar_pct(geral["negativas"].pct), help=geral["negativas"].texto())
 c4.metric("Com pedido associado", formatar_pct(geral["com_pedido"].pct), help=geral["com_pedido"].texto())
 
-aba_geral, aba_pratos, aba_causa, aba_plano, aba_suspeitas, aba_seguranca, aba_dados = st.tabs(
-    ["Visão geral", "Análise por prato", "Causa raiz", "Plano de ação", "Suspeitas", "Segurança", "Sobre os dados"]
-)
+(aba_geral, aba_pratos, aba_causa, aba_plano, aba_suspeitas, aba_respostas, aba_perguntas, aba_seguranca,
+ aba_dados) = st.tabs(["Visão geral", "Análise por prato", "Causa raiz", "Plano de ação", "Suspeitas", "Respostas",
+                       "Pergunte aos dados", "Segurança", "Sobre os dados"])
 
 with aba_geral:
     for alerta in alertas_tendencia(df):
@@ -329,7 +334,7 @@ with aba_pratos:
                 st.markdown(f"**{int(linha['nota'])}★** — {linha['texto']}")
 
 def desenhar_causa_raiz() -> None:
-    causas = calcular_causas(str(cfg.db_path), cfg.db_path.stat().st_mtime, modo)
+    causas = calcular_causas(str(cfg.db_path), versao, modo)
     pedidos = causas["pedidos"]
     com_pedido = df[df["tem_pedido"]]
     st.subheader("Em que condições cada problema aparece")
@@ -489,6 +494,12 @@ def desenhar_suspeitas() -> None:
 
 with aba_suspeitas:
     desenhar_suspeitas()
+
+with aba_respostas:
+    ui_respostas.desenhar(cfg, df_todas)
+
+with aba_perguntas:
+    ui_perguntas.desenhar(cfg, df_todas, modo)
 
 with aba_seguranca:
     st.subheader("Texto de avaliação é dado, nunca instrução")

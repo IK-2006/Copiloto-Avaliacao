@@ -27,7 +27,7 @@ import pandas as pd
 from scipy.stats import fisher_exact
 
 from copiloto.dominio import ROTULO_TEMA, TEMAS
-from copiloto.stats import Proporcao, formatar_pct, pct_com_n
+from copiloto.stats import Proporcao, formatar_nota, formatar_pct, pct_com_n
 
 MIN_N_SEGMENTO = 10
 MIN_EVENTOS_SEGMENTO = 6
@@ -85,7 +85,7 @@ class Padrao:
         partes[0] += "."
         partes.append(
             f"Nesse grupo, {self.no_segmento.texto(unidade=unidade)} {predicado}, "
-            f"contra {formatar_pct(self.fora_do_segmento.pct)} nos demais ({self.lift:.1f}× mais)."
+            f"contra {formatar_pct(self.fora_do_segmento.pct)} nos demais ({formatar_nota(self.lift, 1)}× mais)."
         )
         if self.baixa_confianca:
             partes.append("Amostra pequena: trate como indício, não como conclusão.")

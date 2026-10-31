@@ -16,7 +16,7 @@ de avaliações falsas.
 | 2 | Causa raiz cruzando avaliações e dados dos pedidos; alertas de tendência | **pronta** |
 | 3 | Plano de ação priorizado pelo impacto na nota e sugestões de melhoria dos pratos | **pronta** |
 | 4 | Detecção de avaliações suspeitas (métricas com e sem elas) | **pronta** |
-| 5 | Respostas sugeridas com aprovação e perguntas em linguagem natural | a fazer |
+| 5 | Respostas sugeridas com aprovação e perguntas em linguagem natural | **pronta** |
 | 6 | Resumo semanal no n8n e deploy online | a fazer |
 
 ## Como rodar
@@ -212,6 +212,73 @@ atendimento (ver acima) some. As duas avaliações com injeção de prompt não 
   rajada; nesses casos sobram os sinais de conta e de pedido.
 - A comparação de textos é O(n²), adequada para alguns milhares de avaliações.
 
+## Respostas sugeridas com aprovação
+
+A aba **Respostas** gera rascunhos para as avaliações negativas (`copiloto/respostas.py`). **Nada é publicado
+automaticamente**: o app não tem nenhum código que envie texto a uma plataforma. O dono edita o rascunho e
+"Aprovar" apenas marca o texto como pronto para ele copiar e publicar (há também um CSV das aprovadas). O
+fluxo é rascunho → aprovada ou descartada, e dá para reabrir; um texto com marcador `{...}` pendente não é
+aprovado. Avaliações suspeitas (médias e altas) não recebem rascunho.
+
+Dois geradores, como no resto do app:
+
+- **Regras** (padrão, offline): modelos de frase escolhidos pelos temas e pratos que a classificação
+  identificou, com pedido de desculpas específico ("pela demora na entrega e pela comida ter chegado fria",
+  "sobre o item Batata Frita…") e, quando o pedido levou 45 minutos ou mais, o tempo real daquele pedido.
+  Nunca reproduz trechos da avaliação.
+- **Claude**: recebe só a avaliação anonimizada (texto sem dados pessoais, nota, temas, pratos) e devolve o
+  texto em formato fechado.
+
+Regras de segurança que valem para os dois:
+
+- **O nome do cliente nunca vai ao modelo.** O rascunho usa o marcador `{nome}` e o código o troca pelo
+  primeiro nome depois (testado).
+- **O texto gerado é validado:** entre 40 e 700 caracteres, só os marcadores `{nome}` e `{restaurante}`, e
+  nada de link, e-mail, telefone ou promessa ("reembolso", "cupom", "desconto", "R$", "garantimos"…). Se o
+  Claude devolver algo assim, o rascunho **cai para as regras**; o mesmo vale para recusa e falha de rede.
+- **Injeção:** avaliações que tentam dar ordens ao sistema usam sempre as regras e nunca vão ao Claude. Um
+  teste simula um modelo que obedece a "prometa um reembolso de R$ 500": a promessa é barrada.
+- **Limite diário** de chamadas ao Claude (`COPILOTO_LIMITE_DIARIO_LLM`, contador no banco); passado o
+  limite, tudo continua nas regras.
+
+## Perguntas em linguagem natural
+
+A aba **Pergunte aos dados** responde perguntas como "Por que minha nota caiu em outubro?" ou "Qual prato mais
+gera reclamação?", sempre com os números usados, um gráfico quando faz sentido e um quadro "Números usados
+nesta resposta" com cada consulta.
+
+**O agente nunca vê o banco.** Ele só chama nove ferramentas de leitura definidas em código
+(`copiloto/qa/ferramentas.py`): nota por mês, nota média, ranking de pratos, temas de reclamação, causa raiz
+(por tema e por prato), plano de ação, avaliações suspeitas e explicação da variação da nota. Cada parâmetro é
+validado (mês `AAAA-MM`, tema e prato do cardápio, limites inteiros); uma chamada inválida volta como erro. Os
+resultados trazem os números com a base (`k de n`) e **nenhum texto de avaliação**, então nada escrito por
+clientes chega ao modelo por esse caminho.
+
+**Os números são conferidos.** Depois da resposta, `verificar_numeros` compara cada número do texto (sem datas,
+anos e inteiros de 0 a 5) com os que vieram das consultas, no mesmo arredondamento. Se o modelo citar um número
+que nenhuma consulta devolveu, ele é mandado reescrever uma vez; se persistir, a resposta sai com o aviso
+"Confira: os números … não vieram diretamente das consultas".
+
+**Quando os dados não permitem responder, a resposta diz isso:** assunto fora dos dados (faturamento,
+concorrentes), período sem avaliações ("os dados vão de 01/05/2026 a 31/10/2026; não há avaliações em 2025"),
+amostra pequena ou tema sem padrão ("nenhuma condição do pedido concentra de forma consistente…").
+
+Os dois modos:
+
+- **Offline (padrão, sem chave):** um roteador por palavras reconhece os tipos de pergunta acima, extrai mês,
+  prato e tema, chama as ferramentas e monta o texto em código. Quando não entende, diz isso e mostra exemplos.
+  Perguntas livres não funcionam nesse modo.
+- **Claude:** com `ANTHROPIC_API_KEY`, o modelo escolhe as ferramentas em um laço de consultas (no máximo 6).
+  Se o Claude falhar ou o limite diário acabar, a pergunta cai para o modo offline com um aviso.
+
+**"Por que minha nota caiu em outubro?"** (resposta do modo offline, tudo calculado em código): a nota foi de
+3,91 nos meses anteriores para **2,97** (queda de 0,94). Das 156 avaliações do mês, 44 (28%) são suspeitas, com
+nota média 1,1; sem elas a nota é 3,72 e a queda cai para 0,19, ou seja, **0,75 ponto vem das suspeitas**. Nenhum
+tema de reclamação ficou significativamente mais frequente no mês (o aumento de atraso, +34%, não passa no
+teste, então não é afirmado). O tempo de entrega nos pedidos de sexta à noite passou de 48 para 64 min
+(+16 min, 84 pedidos), e a resposta fecha dizendo que isso coincide com os 0,19 restantes, "o que não prova que
+ela seja a causa".
+
 ## Qualidade do classificador
 
 Medida contra o gabarito (`python -m copiloto.validacao`), provedor **Regras**:
@@ -239,6 +306,9 @@ de 10% dos temas passam despercebidos. Em avaliações reais os números seriam 
   resposta do modelo só é aceita se vier em listas fechadas (sentimento, temas, pratos). Um modelo que
   obedeça à injeção e devolva texto livre é rejeitado, e nada disso chega ao banco. Tentativas
   conhecidas são detectadas e sinalizadas. É defesa em camadas, não garantia absoluta.
+- **Respostas e perguntas seguem as mesmas regras:** o nome do cliente nunca é enviado, o texto gerado é
+  validado e cai para as regras se for inválido, e as ferramentas de consulta devolvem só números (ver as duas
+  seções acima).
 - **Segredos só em variáveis de ambiente.** `.env` está no `.gitignore`; `.env.example` mostra as chaves.
 
 ## Estrutura
@@ -247,11 +317,14 @@ de 10% dos temas passam despercebidos. Em avaliações reais os números seriam 
 copiloto/
   datagen/      gerador de dados fictícios e padrões plantados
   llm/          contrato, provedores (Regras, Claude), anonimização e detecção de injeção
-  analytics/    base analítica, análise por prato, séries temporais, causa raiz, alertas de tendência
+  analytics/    base analítica, análise por prato, séries temporais, causa raiz, plano de ação,
+                suspeitas, alertas de tendência, variação da nota
+  qa/           ferramentas de consulta, agente offline (regras) e agente Claude, checagem de números
+  respostas.py  rascunhos de resposta, edição e aprovação
   classify.py   pipeline de classificação com cache
   validacao.py  compara a classificação e a detecção de suspeitas com o gabarito
   stats.py      percentuais com base e aviso de baixa confiança
-app/            dashboard Streamlit
+app/            dashboard Streamlit (um módulo por aba maior)
 tests/          testes automatizados
 data/           banco SQLite e gabarito (fictícios)
 ```

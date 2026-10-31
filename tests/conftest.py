@@ -35,3 +35,18 @@ def df_avaliacoes(con_classificada):
 @pytest.fixture(scope="session")
 def df_suspeitas(df_avaliacoes):
     return com_suspeitas(df_avaliacoes)
+
+
+@pytest.fixture(scope="session")
+def contexto(dados, df_suspeitas, tmp_path_factory, con_classificada):
+    """Contexto das perguntas, com uma cópia própria do banco: o uso do Claude registrado aqui não vaza para os outros testes."""
+    import shutil
+
+    from copiloto import db
+    from copiloto.qa.ferramentas import carregar_contexto
+
+    copia = tmp_path_factory.mktemp("qa") / "qa.db"
+    shutil.copy(dados[0], copia)
+    con = db.conectar(copia)
+    yield carregar_contexto(con, df_suspeitas)
+    con.close()

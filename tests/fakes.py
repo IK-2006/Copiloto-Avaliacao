@@ -20,7 +20,8 @@ class _Mensagens:
         self.chamadas: list[dict] = []
 
     def create(self, **kwargs) -> SimpleNamespace:
-        self.chamadas.append(kwargs)
+        # guarda uma foto da conversa nesta chamada: o agente continua acrescentando mensagens à mesma lista
+        self.chamadas.append({**kwargs, "messages": list(kwargs.get("messages", []))})
         return self._responder(kwargs)
 
 
@@ -59,5 +60,28 @@ def responder_como_regras(cardapio: list[ItemCardapio]) -> Callable[[dict], Simp
                 "pratos": [{"prato": p.prato, "problemas": list(p.problemas)} for p in cls.pratos],
             })
         return resposta(json.dumps({"classificacoes": saida}))
+
+    return _responder
+
+
+# --- Respostas do Claude com ferramentas (modo perguntas) ---------------------------------------
+def uso_de_ferramenta(nome: str, argumentos: dict, id_: str = "t1") -> SimpleNamespace:
+    """Resposta em que o modelo pede para chamar uma ferramenta."""
+    bloco = SimpleNamespace(type="tool_use", id=id_, name=nome, input=argumentos)
+    return SimpleNamespace(stop_reason="tool_use", content=[bloco])
+
+
+def texto_final(texto: str, stop_reason: str = "end_turn") -> SimpleNamespace:
+    return SimpleNamespace(stop_reason=stop_reason, content=[SimpleNamespace(type="text", text=texto)])
+
+
+def roteiro(*respostas: SimpleNamespace) -> Callable[[dict], SimpleNamespace]:
+    """Responde, em ordem, uma resposta pronta por chamada à API."""
+    fila = list(respostas)
+
+    def _responder(kwargs: dict) -> SimpleNamespace:
+        if not fila:
+            raise AssertionError("o agente fez mais chamadas à API do que o roteiro previa")
+        return fila.pop(0)
 
     return _responder

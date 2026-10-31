@@ -68,17 +68,39 @@ CREATE TABLE IF NOT EXISTS classificacoes (
     criado_em    TEXT NOT NULL
 );
 
+-- Rascunhos de resposta a avaliações. Nada daqui é publicado pelo app: 'aprovada' só marca o texto
+-- como pronto para o dono publicar na plataforma.
+CREATE TABLE IF NOT EXISTS respostas (
+    avaliacao_id   INTEGER PRIMARY KEY REFERENCES avaliacoes(avaliacao_id),
+    texto_sugerido TEXT NOT NULL,
+    texto_final    TEXT NOT NULL,           -- começa igual ao sugerido; o dono pode editar
+    status         TEXT NOT NULL CHECK (status IN ('rascunho', 'aprovada', 'descartada')),
+    provedor       TEXT NOT NULL,
+    modelo         TEXT NOT NULL,
+    criado_em      TEXT NOT NULL,
+    atualizado_em  TEXT NOT NULL,
+    aprovado_em    TEXT
+);
+
+-- Chamadas ao Claude por dia, para o limite diário do demo público.
+CREATE TABLE IF NOT EXISTS uso_llm (
+    dia       TEXT PRIMARY KEY,
+    chamadas  INTEGER NOT NULL
+);
+
 CREATE INDEX IF NOT EXISTS ix_pedidos_criado ON pedidos(criado_em);
 CREATE INDEX IF NOT EXISTS ix_avaliacoes_criado ON avaliacoes(criado_em);
 """
 
 
 def conectar(caminho: str | Path | None = None) -> sqlite3.Connection:
+    """Abre o banco e garante que as tabelas existam (o esquema é idempotente)."""
     caminho = Path(caminho) if caminho else config.carregar().db_path
     caminho.parent.mkdir(parents=True, exist_ok=True)
     con = sqlite3.connect(caminho)
     con.row_factory = sqlite3.Row
     con.execute("PRAGMA foreign_keys = ON")
+    con.executescript(SCHEMA)
     return con
 
 
@@ -89,3 +111,10 @@ def criar_schema(con: sqlite3.Connection) -> None:
 
 def consultar(con: sqlite3.Connection, sql: str, params: tuple | dict = ()) -> pd.DataFrame:
     return pd.read_sql_query(sql, con, params=params)
+
+
+def versao_dos_dados(con: sqlite3.Connection) -> str:
+    """Muda quando avaliações ou classificações mudam, mas não quando o dono edita rascunhos de resposta."""
+    a = con.execute("SELECT COUNT(*), COALESCE(MAX(avaliacao_id), 0) FROM avaliacoes").fetchone()
+    k = con.execute("SELECT COUNT(*), COALESCE(MAX(criado_em), '') FROM classificacoes").fetchone()
+    return f"{a[0]}-{a[1]}-{k[0]}-{k[1]}"

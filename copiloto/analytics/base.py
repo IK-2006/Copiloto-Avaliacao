@@ -1,4 +1,4 @@
-"""Carregamento da base analítica: uma linha por avaliação, já classificada."""
+"""Carregamento da base analítica: avaliações já classificadas e pedidos."""
 from __future__ import annotations
 
 import json
@@ -9,10 +9,28 @@ import pandas as pd
 from copiloto import db
 
 
+def carregar_pedidos(con: sqlite3.Connection) -> pd.DataFrame:
+    """Todos os pedidos, com `itens` (tupla de nomes do cardápio, em ordem alfabética)."""
+    pedidos = db.consultar(
+        con,
+        """SELECT pedido_id, cliente_id, criado_em, dia_semana, hora, turno,
+                  tempo_preparo_min, tempo_entrega_min, distancia_km, valor_total
+           FROM pedidos ORDER BY criado_em""",
+    )
+    itens = db.consultar(
+        con, "SELECT pi.pedido_id, c.nome FROM pedido_itens pi JOIN cardapio c ON c.item_id = pi.item_id"
+    )
+    por_pedido = {pid: tuple(sorted(g["nome"])) for pid, g in itens.groupby("pedido_id")}
+    pedidos["criado_em"] = pd.to_datetime(pedidos["criado_em"])
+    pedidos["itens"] = pedidos["pedido_id"].map(lambda pid: por_pedido.get(pid, ()))
+    return pedidos
+
+
 def carregar_avaliacoes(con: sqlite3.Connection) -> pd.DataFrame:
     """Avaliações classificadas, com os atributos do pedido quando existir.
 
-    Colunas extras: `temas` (lista), `pratos` (lista de {prato, problemas}), `tem_pedido`.
+    Colunas extras: `temas` (lista), `pratos` (lista de {prato, problemas}), `tem_pedido`
+    e `itens` (itens do pedido; tupla vazia quando a avaliação não tem pedido).
     """
     df = db.consultar(
         con,
@@ -29,4 +47,6 @@ def carregar_avaliacoes(con: sqlite3.Connection) -> pd.DataFrame:
     df["pratos"] = df["pratos"].map(json.loads)
     df["tem_pedido"] = df["pedido_id"].notna()
     df["injecao"] = df["injecao"].astype(bool)
+    itens_do_pedido = carregar_pedidos(con).set_index("pedido_id")["itens"].to_dict()
+    df["itens"] = [itens_do_pedido.get(int(p), ()) if pd.notna(p) else () for p in df["pedido_id"]]
     return df

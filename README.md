@@ -13,7 +13,7 @@ de avaliações falsas.
 | Etapa | Conteúdo | Situação |
 |---|---|---|
 | 1 | Dados fictícios, classificação, análise por prato, dashboard básico | **pronta** |
-| 2 | Causa raiz cruzando avaliações e dados dos pedidos | a fazer |
+| 2 | Causa raiz cruzando avaliações e dados dos pedidos; alertas de tendência | **pronta** |
 | 3 | Plano de ação priorizado e sugestões de melhoria dos pratos | a fazer |
 | 4 | Detecção de avaliações suspeitas (métricas com e sem elas) | a fazer |
 | 5 | Respostas sugeridas com aprovação e perguntas em linguagem natural | a fazer |
@@ -76,15 +76,52 @@ Descritos também em `data/plantados.json`, que traz o gabarito de cada avaliaç
 | # | Padrão | Onde ver |
 |---|---|---|
 | P1 | Batata frita murcha ou fria em entregas acima de 40 min (80% dos pedidos, contra 10% nos demais) | Análise por prato |
-| P2 | Sextas à noite com +16 min de preparo e trânsito, e outros +16 min a partir de 01/10 | Etapa 2 |
-| P3 | Ataque de 46 avaliações falsas de 14 a 16/10: nota 1–2, textos quase idênticos, contas novas | Queda da nota na semana de 12/10; Etapa 4 |
-| P4 | Açaí derretido em entregas acima de 5 km | Análise por prato |
+| P2 | Sextas à noite com +16 min de preparo e trânsito, e outros +16 min a partir de 01/10 | Aba Causa raiz |
+| P3 | Ataque de 46 avaliações falsas de 14 a 16/10: nota 1–2, textos quase idênticos, contas novas | Queda da nota na semana de 12/10; alerta de tendência; Etapa 4 |
+| P4 | Açaí derretido em entregas acima de 5 km | Análise por prato; Causa raiz por prato |
 | P5 | Pudim e Salada Caesar quase não aparecem nas avaliações | Aviso de baixa confiança |
 | P6 | Duas avaliações reais com "ignore as instruções anteriores…" | Aba Segurança |
 
-Na versão atual a ferramenta já encontra P1, P4 e P5 (aba **Análise por prato**), mostra o efeito de P3 na
-nota semanal e sinaliza P6. Batata Frita lidera o ranking com **58% de 102 avaliações** relatando problema
-(o gabarito, escrito pelo gerador, tem 62%; a diferença é o que o classificador de regras não reconhece).
+### O que a ferramenta já encontra
+
+| Padrão | Resultado (calculado em código, sem a IA) |
+|---|---|
+| P1 | Batata Frita lidera o ranking de pratos: **58% de 102 avaliações** relatam problema (o gabarito tem 62%; a diferença é o que o classificador de regras não reconhece). 73% das reclamações da batata (43 de 59) vêm de pedidos com entrega acima de 40 min, que são 28% dos pedidos: 66% das avaliações desse grupo citam problema, contra 14% nos demais |
+| P2 | **66% das reclamações de comida fria (61 de 92) vêm de pedidos de sexta à noite, que são 13% dos pedidos**: nesse grupo, 60% das avaliações citam o problema, contra 6% nos demais (10× mais). Para atraso, 52% (43 de 82). 40% das entregas acima de 40 min vêm da sexta à noite, e o tempo médio de entrega nesse horário salta de cerca de 48 min (mai–set) para cerca de 63 min em outubro, enquanto o resto fica estável |
+| P3 | A nota semanal cai para cerca de 1,9 na semana do ataque; o alerta de tendência acusa "reclamações de atendimento subiram 347%", porque as falsas dizem "atendimento péssimo" (sem elas, o alerta some) |
+| P4 | 73% das reclamações do açaí (11 de 15) vêm de pedidos a mais de 5 km, com aviso de baixa confiança (só 16 avaliações no grupo) |
+| P5, P6 | Aviso de baixa confiança e aba Segurança |
+
+Sabor, embalagem, quantidade e pedido errado **não** recebem causa raiz: os dados não mostram concentração
+e a ferramenta não inventa uma.
+
+## Como funciona a causa raiz
+
+`copiloto/analytics/causa_raiz.py` testa todas as combinações de até três condições do pedido (dia da
+semana, turno, entrega acima de 30/40/50 min, preparo acima de 22/28 min, distância acima de 3/5 km) e
+responde a três perguntas, sempre com `k de n` e baixa confiança quando n < 20:
+
+1. **Qual condição do pedido?** Em geral aponta o mecanismo, como "entrega acima de 40 min".
+2. **Quando e onde?** Mesma busca só com dia, turno e distância, para chegar a "sexta-feira, à noite".
+3. **Por que as entregas demoram?** Mesma busca sobre todos os pedidos (não só os avaliados), com o
+   tempo de preparo e de deslocamento dentro e fora do segmento.
+
+Cada padrão traz a parcela das reclamações que ele concentra, a fatia dos pedidos que ele ocupa, a taxa do
+problema dentro e fora do segmento e quantas vezes ela é maior. Para que o acaso não vire padrão:
+
+- teste exato de Fisher com **correção de Bonferroni** pelo número de segmentos testados. Em 40 sorteios
+  sem relação nenhuma com os pedidos, a ferramenta acusou padrão em 1; sem a correção, em 39
+  (`tests/test_causa_raiz.py`);
+- exigências mínimas de amostra (12 reclamações no total, 6 e 10 avaliações no segmento) e de efeito
+  (pelo menos 1,5× mais frequente);
+- os candidatos são ordenados por cobertura x precisão, e os que só repetem outro já escolhido somem.
+
+**Limite importante:** quem avalia não é uma amostra aleatória dos clientes (quem teve problema costuma
+avaliar mais). As taxas descrevem as avaliações, não todos os pedidos, e o padrão aponta onde procurar a
+causa, não prova que ela é a causa.
+
+Os **alertas de tendência** comparam os últimos 28 dias com o período anterior e só disparam com pelo menos
+6 reclamações recentes, aumento de 40% ou mais e teste de Fisher abaixo de 5%.
 
 ## Qualidade do classificador
 
@@ -121,7 +158,7 @@ de 10% dos temas passam despercebidos. Em avaliações reais os números seriam 
 copiloto/
   datagen/      gerador de dados fictícios e padrões plantados
   llm/          contrato, provedores (Regras, Claude), anonimização e detecção de injeção
-  analytics/    base analítica, análise por prato, séries temporais
+  analytics/    base analítica, análise por prato, séries temporais, causa raiz, alertas de tendência
   classify.py   pipeline de classificação com cache
   validacao.py  compara a classificação com o gabarito
   stats.py      percentuais com base e aviso de baixa confiança

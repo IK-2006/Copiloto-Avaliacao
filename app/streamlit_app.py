@@ -12,9 +12,21 @@ import plotly.express as px
 import streamlit as st
 
 from copiloto import config, db
-from copiloto.analytics.base import carregar_avaliacoes
+from copiloto.analytics.base import carregar_avaliacoes, carregar_pedidos
+from copiloto.analytics.causa_raiz import (
+    DIMENSOES_QUANDO_ONDE,
+    Padrao,
+    causas_da_entrega_lenta,
+    causas_do_prato,
+    causas_por_tema,
+    comparar_tempos,
+    evolucao_do_padrao,
+    evolucao_tempos,
+    rotulo_evento_tema,
+)
 from copiloto.analytics.pratos import AnalisePrato, analise_por_prato, ranking_pratos
 from copiloto.analytics.series import nota_por_semana, ranking_temas, resumo_geral, temas_por_semana
+from copiloto.analytics.tendencias import alertas_tendencia
 from copiloto.dominio import ROTULO_TEMA
 from copiloto.stats import formatar_nota, formatar_pct
 
@@ -31,6 +43,31 @@ def carregar(db_path: str, versao_arquivo: float) -> pd.DataFrame:
         return carregar_avaliacoes(con)
     finally:
         con.close()
+
+
+@st.cache_data(show_spinner="Procurando padrões nos pedidos…")
+def calcular_causas(db_path: str, versao_arquivo: float):
+    """Causa raiz por tema (mecanismo e quando/onde), por prato e das entregas lentas."""
+    con = db.conectar(db_path)
+    try:
+        avaliacoes, pedidos = carregar_avaliacoes(con), carregar_pedidos(con)
+    finally:
+        con.close()
+    pratos = sorted({i for itens in pedidos["itens"] for i in itens})
+    return {
+        "pedidos": pedidos,
+        "mecanismo": causas_por_tema(avaliacoes, pedidos),
+        "quando_onde": causas_por_tema(avaliacoes, pedidos, dimensoes=DIMENSOES_QUANDO_ONDE),
+        "pratos": {p: causas_do_prato(avaliacoes, pedidos, p) for p in pratos},
+        "lentas": causas_da_entrega_lenta(pedidos),
+    }
+
+
+def cartao_padrao(padrao: Padrao, rotulo_evento: str, **kwargs) -> None:
+    with st.container(border=True):
+        st.markdown(f"**{padrao.segmento[:1].upper()}{padrao.segmento[1:]}**")
+        st.write(padrao.texto(rotulo_evento, **kwargs))
+        st.caption(padrao.evidencia.capitalize() + ".")
 
 
 def analisar_pratos(db_path: str, df: pd.DataFrame) -> list[AnalisePrato]:
@@ -72,11 +109,13 @@ c2.metric("Nota média", formatar_nota(geral["nota_media"]))
 c3.metric("Avaliações negativas", formatar_pct(geral["negativas"].pct), help=geral["negativas"].texto())
 c4.metric("Com pedido associado", formatar_pct(geral["com_pedido"].pct), help=geral["com_pedido"].texto())
 
-aba_geral, aba_pratos, aba_seguranca, aba_dados = st.tabs(
-    ["Visão geral", "Análise por prato", "Segurança", "Sobre os dados"]
+aba_geral, aba_pratos, aba_causa, aba_seguranca, aba_dados = st.tabs(
+    ["Visão geral", "Análise por prato", "Causa raiz", "Segurança", "Sobre os dados"]
 )
 
 with aba_geral:
+    for alerta in alertas_tendencia(df):
+        st.warning(f"**Alerta de tendência.** {alerta.texto()}", icon="📈")
     st.subheader("Nota média por semana")
     semanal = nota_por_semana(df)
     fig = px.line(semanal, x="semana", y="nota_media", markers=True, custom_data=["avaliacoes"])
@@ -173,6 +212,90 @@ with aba_pratos:
         with st.expander(f"Exemplos de avaliações com problema ({len(exemplos)})"):
             for _, linha in exemplos.head(8).iterrows():
                 st.markdown(f"**{int(linha['nota'])}★** — {linha['texto']}")
+
+def desenhar_causa_raiz() -> None:
+    causas = calcular_causas(str(cfg.db_path), cfg.db_path.stat().st_mtime)
+    pedidos = causas["pedidos"]
+    com_pedido = df[df["tem_pedido"]]
+    st.subheader("Em que condições cada problema aparece")
+    st.caption(
+        "Cruza as avaliações com dia, horário, tempos de preparo e entrega e distância do pedido. Só aparecem "
+        "padrões que resistem a um teste estatístico com correção para múltiplas comparações; se nada "
+        "aparece para um tema, os dados não mostram concentração."
+    )
+    ordem = [t for t, _ in ranking_temas(df)]
+    com_padrao = [t for t in ordem if causas["mecanismo"][t] or causas["quando_onde"][t]]
+    if not com_padrao:
+        st.info("Nenhum problema mostra concentração consistente nos dados atuais.")
+        return
+    tema = st.selectbox("Problema", com_padrao, format_func=lambda t: ROTULO_TEMA[t])
+    rotulo = rotulo_evento_tema(tema)
+    esq, dir_ = st.columns(2)
+    with esq:
+        st.markdown("##### Qual condição do pedido?")
+        for p in causas["mecanismo"][tema] or []:
+            cartao_padrao(p, rotulo)
+        if not causas["mecanismo"][tema]:
+            st.info("Nenhuma condição do pedido concentra este problema.")
+    with dir_:
+        st.markdown("##### Quando e onde?")
+        for p in causas["quando_onde"][tema] or []:
+            cartao_padrao(p, rotulo)
+        if not causas["quando_onde"][tema]:
+            st.info("Nenhum dia, turno ou distância concentra este problema.")
+
+    principal = (causas["quando_onde"][tema] or causas["mecanismo"][tema])[0]
+    evolucao = evolucao_do_padrao(com_pedido, com_pedido["temas"].map(lambda ts: tema in ts), principal.condicoes)
+    st.markdown(f"##### O problema piorou? {principal.segmento[:1].upper()}{principal.segmento[1:]}, mês a mês")
+    fig = px.line(evolucao, x="mes", y="pct", color="grupo", markers=True, custom_data=["k", "n"],
+                  color_discrete_map={"No segmento": COR_PRINCIPAL, "Demais pedidos": COR_NEUTRA})
+    fig.update_traces(hovertemplate="%{x|%b/%Y}: %{customdata[0]} de %{customdata[1]} avaliações (%{y:.0f}%)"
+                                    "<extra>%{fullData.name}</extra>")
+    fig.update_layout(yaxis_title="% das avaliações que citam o problema", xaxis_title=None, margin=dict(t=10),
+                      legend_title=None)
+    st.plotly_chart(fig, width="stretch")
+
+    st.divider()
+    st.subheader("Por que as entregas demoram?")
+    st.caption("Usa todos os pedidos (não só os avaliados): quando e onde as entregas passam de 40 minutos.")
+    for p in causas["lentas"]:
+        cartao_padrao(p, "entregas acima de 40 min", unidade="pedidos", predicado="têm entrega acima de 40 min")
+        tempos = comparar_tempos(pedidos, p.condicoes)
+        st.dataframe(
+            pd.DataFrame(
+                {
+                    "Tempo médio": ["Preparo na cozinha", "Deslocamento até o cliente", "Total até a porta"],
+                    "No segmento": [f"{tempos[k]['no_segmento']:.0f} min" for k in ("preparo", "deslocamento", "entrega")],
+                    "Demais pedidos": [f"{tempos[k]['demais']:.0f} min" for k in ("preparo", "deslocamento", "entrega")],
+                }
+            ),
+            hide_index=True,
+        )
+    if causas["lentas"]:
+        mensal = evolucao_tempos(pedidos, causas["lentas"][-1].condicoes)
+        st.markdown("##### Tempo médio de entrega por mês")
+        fig = px.line(mensal, x="mes", y="entrega_media", color="grupo", markers=True, custom_data=["pedidos"],
+                      color_discrete_map={"No segmento": COR_PRINCIPAL, "Demais pedidos": COR_NEUTRA})
+        fig.update_traces(hovertemplate="%{x|%b/%Y}: %{y:.0f} min (%{customdata[0]} pedidos)<extra>%{fullData.name}</extra>")
+        fig.update_layout(yaxis_title="Minutos até a porta", xaxis_title=None, margin=dict(t=10), legend_title=None)
+        st.plotly_chart(fig, width="stretch")
+        st.caption(f"Segmento acompanhado: {causas['lentas'][-1].segmento}.")
+
+    st.divider()
+    st.subheader("Causa raiz por prato")
+    com_causa = [p for p, ps in causas["pratos"].items() if ps]
+    prato = st.selectbox("Prato", com_causa, key="prato_causa") if com_causa else None
+    for p in (causas["pratos"][prato] if prato else []):
+        cartao_padrao(p, "reclamações do prato")
+    st.caption(
+        "Base: avaliações de pedidos que incluíram o prato, citem-no ou não. Quem avalia não é uma amostra "
+        "aleatória dos clientes (quem teve problema costuma avaliar mais); as taxas descrevem as avaliações, "
+        "não todos os pedidos."
+    )
+
+
+with aba_causa:
+    desenhar_causa_raiz()
 
 with aba_seguranca:
     st.subheader("Texto de avaliação é dado, nunca instrução")
